@@ -1,29 +1,31 @@
 package Ex1;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 public class UniGrades {
     public int[] insufficientGrades(final int[] grades) {
         int[] insufficientGradesArray = new int[0];
         for (final int grade : grades) {
             validateGrade(grade);
-            if (round(grade) < 40) {
-                insufficientGradesArray = addToArray(insufficientGradesArray, round(grade));
+            if (grade < 40) {
+                insufficientGradesArray = addToArray(insufficientGradesArray, grade);
             }
         }
         return insufficientGradesArray;
     }
 
-    public int[] sufficientGrades(final int[] grades) {
-        int[] sufficientGradesArray = new int[0];
-        for (final int grade : grades) {
-            validateGrade(grade);
-            if (round(grade) >= 40) {
-                sufficientGradesArray = addToArray(sufficientGradesArray, round(grade));
-            }
-        }
-        return sufficientGradesArray;
-    }
+//    public int[] sufficientGrades(final int[] grades) {
+//        int[] sufficientGradesArray = new int[0];
+//        for (final int grade : grades) {
+//            validateGrade(grade);
+//            if (round(grade) >= 40) {
+//                sufficientGradesArray = addToArray(sufficientGradesArray, round(grade));
+//            }
+//        }
+//        return sufficientGradesArray;
+//    }
 
-    public double average(final int[] grades) {
+    public String average(final int[] grades) {
         if (grades.length == 0) {
             throw new IllegalArgumentException("Grades array can't be empty.");
         }
@@ -32,7 +34,11 @@ public class UniGrades {
             validateGrade(grade);
             sum += grade;
         }
-        return (double) sum / grades.length;
+        final DecimalFormat df = new DecimalFormat("0.00");
+        double avg = (double) sum/grades.length;
+        return df.format(avg);
+        //return (double) sum / grades.length;
+
     }
 
     public int[] roundAllGrades(int[] grades) {
