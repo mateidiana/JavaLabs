@@ -11,6 +11,10 @@ public class Main {
         System.out.println("Most expensive keyboard: " + es.mostExpensiveItem(keyboards));
         System.out.println("Most expensive usb: " + es.mostExpensiveItem(usb));
 
+        int price;
+        price=Math.max(es.mostExpensiveItem(keyboards),es.mostExpensiveItem(usb));
+        System.out.println("Most expensive item: " + price);
+
         System.out.println("Most expensive and affordable usb: " + es.mostExpensiveAndAffordableItem(usb, 10));
 
         System.out.println("Best combination of items: " + es.bestCombinationPrice(keyboards, usb, 60));
