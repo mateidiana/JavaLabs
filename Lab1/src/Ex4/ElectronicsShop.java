@@ -5,7 +5,7 @@ public class ElectronicsShop {
         validateArray(itemArray);
         int min = Integer.MAX_VALUE;
         for (int item : itemArray) {
-            if (min > item) {
+            if (item < min) {
                 min = item;
             }
         }
@@ -16,7 +16,7 @@ public class ElectronicsShop {
         validateArray(itemArray);
         int max = Integer.MIN_VALUE;
         for (int item : itemArray) {
-            if (max < item) {
+            if (item > max) {
                 max = item;
             }
         }
@@ -28,7 +28,7 @@ public class ElectronicsShop {
         validateBudget(budget);
         int max = Integer.MIN_VALUE;
         for (int item : itemArray) {
-            if (max < item && item < budget) {
+            if (item > max && item <= budget) {
                 max = item;
             }
         }
