@@ -14,16 +14,13 @@ public class UniGrades {
         return insufficientGradesArray;
     }
 
-//    public int[] sufficientGrades(final int[] grades) {
-//        int[] sufficientGradesArray = new int[0];
-//        for (final int grade : grades) {
-//            validateGrade(grade);
-//            if (round(grade) >= 40) {
-//                sufficientGradesArray = addToArray(sufficientGradesArray, round(grade));
-//            }
-//        }
-//        return sufficientGradesArray;
-//    }
+    public int[] addToArray(final int[] oldArray, final int newValue) {
+        validateGrade(newValue);
+        int[] newArray = new int[oldArray.length + 1];
+        System.arraycopy(oldArray, 0, newArray, 0, oldArray.length);
+        newArray[oldArray.length] = newValue;
+        return newArray;
+    }
 
     public String average(final int[] grades) {
         if (grades.length == 0) {
@@ -37,7 +34,7 @@ public class UniGrades {
         final DecimalFormat df = new DecimalFormat("0.00");
         double avg = (double) sum/grades.length;
         return df.format(avg);
-        //return (double) sum / grades.length;
+        //return avg;
 
     }
 
@@ -59,14 +56,6 @@ public class UniGrades {
             return grade - grade % 5 + 5;
         }
         return grade;
-    }
-
-    public int[] addToArray(final int[] oldArray, final int newValue) {
-        validateGrade(newValue);
-        int[] newArray = new int[oldArray.length + 1];
-        System.arraycopy(oldArray, 0, newArray, 0, oldArray.length);
-        newArray[oldArray.length] = newValue;
-        return newArray;
     }
 
     public int maxGrade(final int[] grades) {

@@ -23,7 +23,7 @@ public class ElectronicsShop {
         return max;
     }
 
-    public int mostExpensiveAndAffordableItem(int[] itemArray, int budget) {
+    public int mostExpensiveAndAffordableItem(int[] itemArray,int budget) {
         validateArray(itemArray);
         validateBudget(budget);
         int max = Integer.MIN_VALUE;
