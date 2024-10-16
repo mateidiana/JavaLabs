@@ -15,7 +15,7 @@ public class Main {
         System.out.println("Sub: " + Arrays.toString(np.sub(nr3, nr4)));
 
         int[] nr5 = new int[]{2, 3, 6, 0};
-        System.out.println("Multiply : " + Arrays.toString(np.multiply(nr5, 2)));
+        System.out.println("Multiply : " + Arrays.toString(np.multiply(nr5, 1)));
 
         int[] nr6 = new int[]{8, 1};
         System.out.println("Divide: " + Arrays.toString(np.divide(nr6, 9)));

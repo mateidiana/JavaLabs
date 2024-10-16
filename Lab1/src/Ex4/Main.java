@@ -3,7 +3,7 @@ package Ex4;
 public class Main {
     public static void main(String[] args) {
         ElectronicsShop es = new ElectronicsShop();
-        int[] keyboards = new int[]{40, 50, 60};
+        int[] keyboards = new int[]{60};
         int[] usb = new int[]{8, 12};
 
         System.out.println("Cheapest keyboard: " + es.cheapestItem(keyboards));
