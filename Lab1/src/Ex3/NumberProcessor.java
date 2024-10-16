@@ -27,6 +27,10 @@ public class NumberProcessor {
     public int[] sub(final int[] nr1, final int[] nr2) {
         validateNumber(nr1);
         validateNumber(nr2);
+
+        if (buildNumber(nr1)<buildNumber(nr2))
+            throw new RuntimeException("Subtraction will be negative");
+
         int[] result = new int[nr1.length];
         int carry = 0;
         for (int i = nr1.length - 1; i >= 0; i--) {
@@ -107,5 +111,16 @@ public class NumberProcessor {
         if (digit > 9 || digit < 0) {
             throw new RuntimeException("Invalid digit.");
         }
+    }
+
+    public int buildNumber(final int[] number) {
+        int result=0;
+        int multiplier=1;
+        for (int i=number.length-1;i>=0;i--)
+        {
+            result=result+number[i]*multiplier;
+            multiplier=multiplier*10;
+        }
+        return result;
     }
 }

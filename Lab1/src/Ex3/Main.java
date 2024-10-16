@@ -19,5 +19,8 @@ public class Main {
 
         int[] nr6 = new int[]{8, 1};
         System.out.println("Divide: " + Arrays.toString(np.divide(nr6, 9)));
+
+//        int number=np.buildNumber(nr1);
+//        System.out.println(number);
     }
 }
