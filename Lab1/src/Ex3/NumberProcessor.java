@@ -4,6 +4,7 @@ public class NumberProcessor {
     public int[] sum(final int[] nr1, final int[] nr2) {
         validateNumber(nr1);
         validateNumber(nr2);
+
         int[] result = new int[nr1.length];
         int carry = 0;
         for (int i = nr1.length - 1; i >= 0; i--) {
