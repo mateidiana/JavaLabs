@@ -114,12 +114,12 @@ public class NumberProcessor {
     }
 
     public int buildNumber(final int[] number) {
-        int result=0;
-        int multiplier=1;
-        for (int i=number.length-1;i>=0;i--)
+        int result = 0;
+        int multiplier = 1;
+        for (int i = number.length-1;i >= 0;i--)
         {
-            result=result+number[i]*multiplier;
-            multiplier=multiplier*10;
+            result = result + number[i] * multiplier;
+            multiplier = multiplier*10;
         }
         return result;
     }
