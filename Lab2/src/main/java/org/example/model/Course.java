@@ -7,6 +7,7 @@ public class Course {
     private Teacher teacher;
     private List<Student> enrolledStudents;
     private Integer availableSlots;
+    private String[][] exercises;
 
     public Course(Integer id, String courseName, Teacher teacher, Integer maxStudents) {
         this.id = id;
@@ -14,10 +15,15 @@ public class Course {
         this.teacher = teacher;
         this.availableSlots = maxStudents;
         this.enrolledStudents = new ArrayList<>();
+        this.exercises=new String[100][100];
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getCourseName() {
@@ -52,6 +58,13 @@ public class Course {
         this.availableSlots = availableSlots;
     }
 
+    public String[][] getExercises() {
+        return exercises;
+    }
+
+    public void setExercises(String[][] exercises) {
+        this.exercises=exercises;
+    }
 
     @Override
     public String toString() {
