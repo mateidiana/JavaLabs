@@ -6,7 +6,7 @@ import java.util.List;
 public class StudentRepository implements IRepository<Student> {
     private List<Student> students;
     private static StudentRepository instance;
-    private StudentRepository() {
+    public StudentRepository() {
         this.students=new ArrayList<>();
     }
 
@@ -31,6 +31,14 @@ public class StudentRepository implements IRepository<Student> {
     @Override
     public void delete(Student object) {
         students.remove(object);
+    }
+
+    public Student getById(Integer id){
+        for (Student student : students) {
+            if (student.getId() == id)
+                return student;
+        }
+        return null;
     }
 
     public static StudentRepository getInstance() {

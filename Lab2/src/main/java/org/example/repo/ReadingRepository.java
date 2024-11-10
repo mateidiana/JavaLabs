@@ -1,5 +1,6 @@
 package org.example.repo;
 import org.example.model.Reading;
+import org.example.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 public class ReadingRepository implements IRepository<Reading> {
     private List<Reading> readingCourses;
     private static ReadingRepository instance;
-    private ReadingRepository() {
+    public ReadingRepository() {
         this.readingCourses=new ArrayList<>();
     }
 
@@ -32,6 +33,14 @@ public class ReadingRepository implements IRepository<Reading> {
     @Override
     public void delete(Reading object) {
         readingCourses.remove(object);
+    }
+
+    public Reading getById(Integer id){
+        for (Reading reading : readingCourses) {
+            if (reading.getId() == id)
+                return reading;
+        }
+        return null;
     }
 
     public static ReadingRepository getInstance() {
