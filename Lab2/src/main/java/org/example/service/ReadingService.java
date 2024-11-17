@@ -21,16 +21,24 @@ public class ReadingService {
     }
 
     public void enroll(Integer studentId, Integer readingCourseId) {
+        int alreadyEnrolled=0;
         Student student = studentRepo.getById(studentId);
         Reading course = readingRepo.getById(readingCourseId);
-        studentRepo.delete(student);
-        readingRepo.delete(course);
-        if (course.getAvailableSlots() > course.getEnrolledStudents().size()) {
-            course.getEnrolledStudents().add(student);
-            student.getCourses().add(course);
-            readingRepo.save(course);
-            studentRepo.save(student);
+        for (Course course1:student.getCourses()){
+            if (course1.getId()==course.getId())
+                alreadyEnrolled=1;
         }
+        if (alreadyEnrolled==0){
+            studentRepo.delete(student);
+            readingRepo.delete(course);
+            if (course.getAvailableSlots() > course.getEnrolledStudents().size()) {
+                course.getEnrolledStudents().add(student);
+                student.getCourses().add(course);
+                readingRepo.save(course);
+                studentRepo.save(student);
+            }
+        }
+
     }
 
     public void practiceReading(Integer studentId, Integer courseId) {

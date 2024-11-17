@@ -22,6 +22,7 @@ public class Main {
         ReadingService readingService = new ReadingService(readingRepo, studentRepo);
         ReadingController readingController = new ReadingController(readingService);
 
+        readingController.enrollStudent(1,6);
         StudentView studentView = new StudentView(readingController);
         TeacherView teacherView = new TeacherView(readingController);
         //studentView.start();
