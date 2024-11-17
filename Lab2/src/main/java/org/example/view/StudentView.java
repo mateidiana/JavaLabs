@@ -2,6 +2,7 @@ package org.example.view;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 import org.example.controller.ReadingController;
+import org.example.controller.ExamController;
 import org.example.service.ReadingService;
 import org.example.model.Reading;
 import org.example.model.Student;
@@ -11,8 +12,10 @@ import org.example.repo.ReadingRepository;
 
 public class StudentView {
     private ReadingController readingController;
-    public StudentView(ReadingController readingController){
+    private ExamController examController;
+    public StudentView(ReadingController readingController, ExamController examController){
         this.readingController=readingController;
+        this.examController=examController;
     }
 
     public void start(){
@@ -20,7 +23,7 @@ public class StudentView {
         boolean continueLoop = true;
 
         while (continueLoop) {
-            System.out.print("Select an option:\n\n1. View students\n2. View reading courses\n3. View students enrolled in reading courses\n4. Practice reading\n5. Enroll student in a reading course\n6. Review past mistakes\n0. Exit\n");
+            System.out.print("Select an option:\n\n1. View students\n2. View reading courses\n3. View students enrolled in reading courses\n4. Practice reading\n5. Enroll student in a reading course\n6. Review past mistakes\n7. Take reading exam\n0. Exit\n");
 
             String option = scanner.nextLine();
 
@@ -46,6 +49,9 @@ public class StudentView {
                 case "6":
                     readingController.reviewPastMistakes(readStudentId(scanner));
                     break;
+                case "7":
+                    examController.takeReadingExam(readStudentId(scanner),readExamId(scanner));
+                    break;
                 default:
             }
         }
@@ -58,6 +64,11 @@ public class StudentView {
 
     private static int readCourseId(Scanner scanner) {
         System.out.print("Enter course ID: ");
+        return Integer.parseInt(scanner.nextLine());
+    }
+
+    private static int readExamId(Scanner scanner) {
+        System.out.print("Enter exam ID: ");
         return Integer.parseInt(scanner.nextLine());
     }
 

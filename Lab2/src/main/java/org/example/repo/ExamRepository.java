@@ -1,5 +1,6 @@
 package org.example.repo;
 import org.example.model.Exam;
+import org.example.model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 public class ExamRepository implements IRepository<Exam> {
     private List<Exam> exams;
     private static ExamRepository instance;
-    private ExamRepository() {
+    public ExamRepository() {
         this.exams=new ArrayList<>();
     }
 
@@ -27,6 +28,14 @@ public class ExamRepository implements IRepository<Exam> {
         if (index != -1) {
             exams.set(index, examRepl);
         }
+    }
+
+    public Exam getById(Integer id){
+        for (Exam exam : exams) {
+            if (exam.getId() == id)
+                return exam;
+        }
+        return null;
     }
 
     @Override

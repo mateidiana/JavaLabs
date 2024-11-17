@@ -48,21 +48,18 @@ public class ReadingService {
             newMatrix[0]=newRow;
             return newMatrix;
         }
-        // Get the number of rows and columns in the original matrix
+
         int numRows = originalMatrix.length;
         int numCols = originalMatrix[0].length;
 
-        // Create a new matrix with one extra row
         String[][] newMatrix = new String[numRows + 1][numCols];
 
-        // Copy the original matrix into the new matrix
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
                 newMatrix[i][j] = originalMatrix[i][j];
             }
         }
 
-        // Add the new row to the end of the new matrix
         for (int j = 0; j < numCols; j++) {
             newMatrix[numRows][j] = newRow[j];
         }
