@@ -10,13 +10,12 @@ import org.example.model.Teacher;
 import org.example.repo.StudentRepository;
 import org.example.repo.ReadingRepository;
 import org.example.view.StudentView;
+import org.example.view.TeacherView;
+import org.example.view.View;
 
 public class Main {
     public static void main(String[] args) {
-//        Teacher t1=new Teacher("teacher1",1);
-//        Course c=new Course(1,"Course1",t1,10);
-//        Reading r=new Reading(2,"reading1",t1,10);
-//        System.out.println(r);
+
         ReadingRepository readingRepo = createInMemoryCourseRepository();
         StudentRepository studentRepo = createInMemoryStudentRepository();
 
@@ -24,7 +23,10 @@ public class Main {
         ReadingController readingController = new ReadingController(readingService);
 
         StudentView studentView = new StudentView(readingController);
-        studentView.start();
+        TeacherView teacherView = new TeacherView(readingController);
+        //studentView.start();
+        View view = new View(studentView,teacherView);
+        view.start();
 
     }
 
@@ -41,6 +43,9 @@ public class Main {
         readingRepo.save(new Reading(3, "Reading3", new Teacher("Teacher3", 3), 25));
         readingRepo.save(new Reading(4, "Reading4", new Teacher("Teacher4", 4), 25));
         readingRepo.save(new Reading(5, "Reading5", new Teacher("Teacher5", 5), 25));
+
+        Reading r1=new Reading(6,"Reading6",new Teacher("Teacher6",6),20);
+
 
         String[][] exercises = {
                 {"Du brauchst Hilfe.", "Du _ Hilfe.", "a. brauchst", "b. braucht", "c. brauche", "You need help."},
@@ -59,7 +64,8 @@ public class Main {
                 {"Ich mag diese Wohnung.", "Ich mag _ Wohnung.", "a. dieses", "b. dieser", "c. diese", "I like this living space."}
         };
 
-        readingRepo.getObjects().forEach(System.out::println);
+        r1.setExercises(exercises);
+        readingRepo.save(r1);
         return readingRepo;
     }
 }
