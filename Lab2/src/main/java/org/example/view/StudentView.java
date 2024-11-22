@@ -1,23 +1,33 @@
 package org.example.view;
 import java.util.Scanner;
 import java.util.stream.IntStream;
+import org.example.controller.GrammarController;
 import org.example.controller.ReadingController;
-import org.example.controller.ExamController;
-import org.example.service.ReadingService;
-import org.example.model.Reading;
-import org.example.model.Student;
-import org.example.model.Teacher;
-import org.example.repo.StudentRepository;
-import org.example.repo.ReadingRepository;
+import org.example.controller.*;
 
+/**
+ * Displays student functionalities
+ */
 public class StudentView {
+    private StudentController studentController;
     private ReadingController readingController;
     private ExamController examController;
-    public StudentView(ReadingController readingController, ExamController examController){
+    private GrammarController grammarController;
+    private VocabController vocabController;
+    private WritingController writingController;
+    public StudentView(StudentController studentController, ReadingController readingController, ExamController examController, GrammarController grammarController, VocabController vocabController, WritingController writingController){
+        this.studentController=studentController;
         this.readingController=readingController;
         this.examController=examController;
+        this.grammarController=grammarController;
+        this.vocabController=vocabController;
+        this.writingController=writingController;
     }
 
+    /**
+     * Based on options, a student can access functionalities for enrolling and practicing all courses,
+     * taking exams and receiving results
+     */
     public void start(){
         Scanner scanner = new Scanner(System.in);
         boolean continueLoop = true;
@@ -32,7 +42,7 @@ public class StudentView {
                     continueLoop = false;
                     break;
                 case "1":
-                    System.out.println("To be implemented");
+                    studentController.createStudent(readStudentId(scanner),readStudentName(scanner));
                     break;
                 case "2":
                     enrollMenu();
@@ -54,12 +64,15 @@ public class StudentView {
         }
     }
 
+    /**
+     * Menu for manipulating reading courses
+     */
     public void readingMenu(){
         Scanner scanner = new Scanner(System.in);
         boolean continueLoop = true;
 
         while (continueLoop) {
-            System.out.print("Select an option:\n\n1. View your reading courses\n2. Practice reading\n3. Review past mistakes\n4. Take reading exam\n5. View past exam scores\n0. Exit\n");
+            System.out.print("Select an option:\n\n1. View your reading courses\n2. Practice reading\n3. Review past mistakes\n4. Take reading exam\n5. View past exam scores\n6. View mandatory books\n0. Exit\n");
 
             String option = scanner.nextLine();
 
@@ -68,7 +81,7 @@ public class StudentView {
                     continueLoop = false;
                     break;
                 case "1":
-                    System.out.println("To be implemented");
+                    readingController.showEnrolledCourses(readStudentId(scanner));
                     break;
                 case "2":
                     readingController.practiceReading(readStudentId(scanner),readCourseId(scanner));
@@ -77,22 +90,29 @@ public class StudentView {
                     readingController.reviewPastMistakes(readStudentId(scanner));
                     break;
                 case "4":
+                    examController.showAllReadingExams();
                     examController.takeReadingExam(readStudentId(scanner),readExamId(scanner));
                     break;
                 case "5":
-                    System.out.println("To be implemented1");
+                    examController.showReadingResults(readStudentId(scanner));
+                    break;
+                case "6":
+                    readingController.viewMandatoryBooks(readStudentId(scanner),readCourseId(scanner));
                     break;
                 default:
             }
         }
     }
 
+    /**
+     * Menu for manipulating writing courses
+     */
     public void writingMenu(){
         Scanner scanner = new Scanner(System.in);
         boolean continueLoop = true;
 
         while (continueLoop) {
-            System.out.print("Select an option:\n\n1. View your writing courses\n2. Practice writing\n3. Review past mistakes\n4. Take writing exam\n5. View past exam scores\n0. Exit\n");
+            System.out.print("Select an option:\n\n1. View your writing courses\n2. Practice writing\n3. Take writing exam\n4. View past exam scores\n5. View past feedbacks\n0. Exit\n");
 
             String option = scanner.nextLine();
 
@@ -101,25 +121,27 @@ public class StudentView {
                     continueLoop = false;
                     break;
                 case "1":
-                    System.out.println("To be implemented");
+                    writingController.showEnrolledCourses(readStudentId(scanner));
                     break;
                 case "2":
-                    System.out.println("To be implemented1");
+                    writingController.practiceWriting(readStudentId(scanner),readCourseId(scanner));
                     break;
                 case "3":
-                    System.out.println("To be implemented2");
+                    examController.takeWritingExam(readStudentId(scanner),readExamId(scanner));
                     break;
                 case "4":
-                    System.out.println("To be implemented3");
+                    examController.showWritingResults(readStudentId(scanner));
                     break;
                 case "5":
-                    System.out.println("To be implemented4");
-                    break;
+                    writingController.getFeedback(readStudentId(scanner));
                 default:
             }
         }
     }
 
+    /**
+     * Menu for manipulating grammar courses
+     */
     public void grammarMenu(){
         Scanner scanner = new Scanner(System.in);
         boolean continueLoop = true;
@@ -134,25 +156,28 @@ public class StudentView {
                     continueLoop = false;
                     break;
                 case "1":
-                    System.out.println("To be implemented");
+                    grammarController.showEnrolledGrammarCourses(readStudentId(scanner));
                     break;
                 case "2":
-                    System.out.println("To be implemented1");
+                    grammarController.practiceGrammar(readStudentId(scanner),readCourseId(scanner));
                     break;
                 case "3":
-                    System.out.println("To be implemented2");
+                    grammarController.reviewPastMistakes(readStudentId(scanner),readCourseId(scanner));
                     break;
                 case "4":
-                    System.out.println("To be implemented3");
+                    examController.takeGrammarExam(readStudentId(scanner),readExamId(scanner));
                     break;
                 case "5":
-                    System.out.println("To be implemented4");
+                    examController.showGrammarResults(readStudentId(scanner));
                     break;
                 default:
             }
         }
     }
 
+    /**
+     * Menu for manipulating vocabulary courses
+     */
     public void vocabularyMenu(){
         Scanner scanner = new Scanner(System.in);
         boolean continueLoop = true;
@@ -167,25 +192,28 @@ public class StudentView {
                     continueLoop = false;
                     break;
                 case "1":
-                    System.out.println("To be implemented");
+                    vocabController.showEnrolledVocabCourses(readStudentId(scanner));
                     break;
                 case "2":
-                    System.out.println("To be implemented1");
+                    vocabController.practiceVocabulary(readStudentId(scanner),readCourseId(scanner));
                     break;
                 case "3":
-                    System.out.println("To be implemented2");
+                    vocabController.reviewPastMistakes(readStudentId(scanner),readCourseId(scanner));
                     break;
                 case "4":
-                    System.out.println("To be implemented3");
+                    examController.takeVocabExam(readStudentId(scanner),readExamId(scanner));
                     break;
                 case "5":
-                    System.out.println("To be implemented4");
+                    examController.showVocabResults(readStudentId(scanner));
                     break;
                 default:
             }
         }
     }
 
+    /**
+     * Menu for enrolling into a course
+     */
     public void enrollMenu(){
         Scanner scanner = new Scanner(System.in);
         System.out.print("Select an option:\n\n1. Enroll in a reading course\n2. Enroll in a writing course\n3. Enroll in a grammar course\n4. Enroll in a vocabulary course\n0. Exit\n");
@@ -199,21 +227,34 @@ public class StudentView {
                 readingController.enrollStudent(readStudentId(scanner),readCourseId(scanner));
                 break;
             case "2":
-                System.out.println("To be implemented2");
+                writingController.viewCourses();
+                writingController.enrollStudent(readStudentId(scanner),readCourseId(scanner));
                 break;
             case "3":
-                System.out.println("To be implemented3");
+                grammarController.viewCourses();
+                grammarController.enrollStudent(readStudentId(scanner),readCourseId(scanner));
                 break;
             case "4":
-                System.out.println("To be implemented4");
+                vocabController.viewCourses();
+                vocabController.enrollStudent(readStudentId(scanner),readCourseId(scanner));
                 break;
             default:
         }
     }
 
+    /**
+     * Read inputs
+     * @param scanner reads inputs
+     * @return int or strings
+     */
     private static int readStudentId(Scanner scanner) {
         System.out.println("Enter student ID: ");
         return Integer.parseInt(scanner.nextLine());
+    }
+
+    private static String readStudentName(Scanner scanner) {
+        System.out.println("Enter student name: ");
+        return scanner.nextLine();
     }
 
     private static int readCourseId(Scanner scanner) {
