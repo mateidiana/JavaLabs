@@ -17,6 +17,7 @@ import org.example.view.View;
 import java.util.Map;
 import java.util.HashMap;
 
+
 /**
  * Application entry point
  * Initializes all repositories, services and controllers
