@@ -39,6 +39,7 @@ public class Main {
         StudentService studentService = new StudentService(studentRepo);
         StudentController studentController = new StudentController(studentService);
 
+
         TeacherService teacherService = new TeacherService(teacherRepo);
         TeacherController teacherController = new TeacherController(teacherService);
 

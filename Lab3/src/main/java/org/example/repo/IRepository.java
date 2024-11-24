@@ -38,4 +38,6 @@ public interface IRepository<T> {
      * @param object the object of type {@code T} to be deleted
      */
     void delete(T object);
+
+    //T getById(Integer id);
 }

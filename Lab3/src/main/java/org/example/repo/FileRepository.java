@@ -26,11 +26,6 @@ public class FileRepository<T> implements IRepository<T> {
     }
 
 
-    public T get(Integer id) {
-        return readDataFromFile().get(id);
-    }
-
-
     @Override
     public void update(T obj, T replace) {
         List<T> objects=readDataFromFile();
