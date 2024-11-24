@@ -34,13 +34,22 @@ public class ExamService {
         this.teacherRepo=teacherRepo;
     }
 
+    public Student getStudentById(Integer studentId){
+        for (Student student : studentRepo.getObjects()) {
+            if (student.getId() == studentId)
+                return student;
+        }
+        return null;
+    }
+
     /**
      * A student must answer to some true/false questions about a literary text, the right/ wrong answers affect the score
      * @param studentId Identifies the student that takes a reading exam
      * @param examId Identifies the reading exam that is being taken
      */
     public void takeReadingExam(Integer studentId, Integer examId){
-        Student student = studentRepo.getById(studentId);
+        //Student student = studentRepo.getById(studentId);
+        Student student=getStudentById(studentId);
         Exam exam = examRepo.getById(examId);
         String[][] exercises=exam.getExercises();
         Scanner scanner = new Scanner(System.in);
