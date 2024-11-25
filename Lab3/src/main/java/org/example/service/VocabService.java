@@ -25,14 +25,40 @@ public class VocabService {
         this.teacherRepo= teacherRepo;
     }
 
+    public Student getStudentById(Integer studentId){
+        for (Student student : studentRepo.getObjects()) {
+            if (student.getId() == studentId)
+                return student;
+        }
+        return null;
+    }
+
+    public Teacher getTeacherById(Integer teacherId){
+        for (Teacher teacher : teacherRepo.getObjects()) {
+            if (teacher.getId() == teacherId)
+                return teacher;
+        }
+        return null;
+    }
+
+    public Vocabulary getVocabById(Integer vocabId){
+        for (Vocabulary vocab : vocabRepo.getObjects()) {
+            if (vocab.getId() ==vocabId)
+                return vocab;
+        }
+        return null;
+    }
+
     /**
      * Enrolls a student in a specific vocabulary course
      * @param studentId refers to the student to be enrolled
      * @param vocabCourseId refers to the id of the course the student is being enrolled in
      */
     public void enroll(Integer studentId, Integer vocabCourseId) {
-        Student student = studentRepo.getById(studentId);
-        Vocabulary course = vocabRepo.getById(vocabCourseId);
+//        Student student = studentRepo.getById(studentId);
+//        Vocabulary course = vocabRepo.getById(vocabCourseId);
+        Student student = getStudentById(studentId);
+        Vocabulary course = getVocabById(vocabCourseId);
         studentRepo.delete(student);
         vocabRepo.delete(course);
         if (course.getAvailableSlots() > course.getEnrolledStudents().size()) {
@@ -50,9 +76,10 @@ public class VocabService {
      * @param courseId Refers to the course the student practices in
      */
     public void practiceVocabulary(Integer studentId, Integer courseId) {
-        Student student = studentRepo.getById(studentId);
-        Vocabulary course = vocabRepo.getById(courseId);
-
+//        Student student = studentRepo.getById(studentId);
+//        Vocabulary course = vocabRepo.getById(courseId);
+        Student student = getStudentById(studentId);
+        Vocabulary course = getVocabById(courseId);
         Scanner scanner = new Scanner(System.in);
         int correctAnswers=0;
         int foundCourse=0;
@@ -109,8 +136,10 @@ public class VocabService {
      * @param studentId Refers to a specific student
      */
     public void reviewPastMistakes(Integer studentId, Integer courseId) {
-        Student student = studentRepo.getById(studentId);
-        Vocabulary course = vocabRepo.getById(courseId);
+//        Student student = studentRepo.getById(studentId);
+//        Vocabulary course = vocabRepo.getById(courseId);
+        Student student = getStudentById(studentId);
+        Vocabulary course = getVocabById(courseId);
         Map <String, String> tempother=new HashMap<>();
         Scanner scanner = new Scanner(System.in);
         int foundCourse = 0;
@@ -156,7 +185,9 @@ public class VocabService {
      * @return all students enrolled in a vocabulary course
      */
     public List<Student> getEnrolledStudents(Integer courseId) {
-        Vocabulary course = vocabRepo.getById(courseId);
+        //Vocabulary course = vocabRepo.getById(courseId);
+
+        Vocabulary course = getVocabById(courseId);
         return course.getEnrolledStudents();
     }
 
@@ -177,7 +208,7 @@ public class VocabService {
      * @param teacherId refers to a teacher
      */
     public void viewCourseTaughtByTeacher(Integer teacherId) {
-        Teacher teacher = teacherRepo.getById(teacherId);
+        //Teacher teacher = teacherRepo.getById(teacherId);
         for (Vocabulary course : vocabRepo.getObjects()) {
             if (course.getTeacher().getId() == teacherId) {
                 System.out.println(course.getCourseName());
@@ -207,7 +238,8 @@ public class VocabService {
     }
 
     public void createVocabularyCourse(Integer courseId, Integer teacherId, String courseName, Integer maxStudents) {
-        Teacher teacher = teacherRepo.getById(teacherId);
+        //Teacher teacher = teacherRepo.getById(teacherId);
+        Teacher teacher=getTeacherById(teacherId);
         Vocabulary v1 = new Vocabulary(courseId, courseName, teacher, maxStudents);
         Map<String, String> vocabularyExercises = new HashMap<>();
         vocabularyExercises.put("Hund", "dog");
@@ -226,8 +258,10 @@ public class VocabService {
     }
 
     public void updateVocabularyCourse(Integer courseId, Integer teacherId, String courseName, Integer maxStudents) {
-        Vocabulary course = vocabRepo.getById(courseId);
-        Teacher teacher = teacherRepo.getById(teacherId);
+//        Vocabulary course = vocabRepo.getById(courseId);
+//        Teacher teacher = teacherRepo.getById(teacherId);
+        Teacher teacher=getTeacherById(teacherId);
+        Vocabulary course = getVocabById(courseId);
         Vocabulary v1 = new Vocabulary(courseId, courseName, teacher, maxStudents);
         Map<String, String> vocabularyExercises = new HashMap<>();
         vocabularyExercises.put("Hund", "dog");
@@ -251,7 +285,8 @@ public class VocabService {
      * @param teacherId Refers to the teacher who removes the course
      */
     public void removeVocabularyCourse(Integer courseId, Integer teacherId) {
-        Vocabulary course = vocabRepo.getById(courseId);
+        //Vocabulary course = vocabRepo.getById(courseId);
+        Vocabulary course = getVocabById(courseId);
         if (course.getTeacher().getId() == teacherId) {
             vocabRepo.delete(course);
         } else {
@@ -265,8 +300,10 @@ public class VocabService {
      * @param courseId Exam whose teacher is being replaced
      */
     public void changeTeacherAccessToVocabCourse(Integer courseId, Integer teacherId){
-        Vocabulary course=vocabRepo.getById(courseId);
-        Teacher teacher=teacherRepo.getById(teacherId);
+//        Vocabulary course=vocabRepo.getById(courseId);
+//        Teacher teacher=teacherRepo.getById(teacherId);
+        Vocabulary course = getVocabById(courseId);
+        Teacher teacher=getTeacherById(teacherId);
         course.setTeacher(teacher);
     }
 
@@ -288,7 +325,8 @@ public class VocabService {
      * @param studentId identifies a student
      */
     public void showEnrolledVocabCourses(Integer studentId){
-        Student student = studentRepo.getById(studentId);
+        //Student student = studentRepo.getById(studentId);
+        Student student = getStudentById(studentId);
         for (Course course:student.getCourses())
             if (course.getCourseName().contains("Vocab"))
                 System.out.println(course);

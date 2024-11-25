@@ -25,13 +25,15 @@ import java.util.HashMap;
 public class Main {
     public static void main(String[] args) {
 
-        ReadingRepository readingRepo = createInMemoryReadingRepository();
+        //ReadingRepository readingRepo = createInMemoryReadingRepository();
         StudentRepository studentRepo = createInMemoryStudentRepository();
         TeacherRepository teacherRepo = createInMemoryTeacherRepository();
         GrammarRepository grammarRepo= createInMemoryGrammarRepository();
         VocabRepository vocabRepo= createInMemoryVocabRepository();
         ExamRepository examRepo = createInMemoryExamRepository();
         WritingRepository writingRepo= createInMemoryWritingRepository();
+
+        IRepository<Reading> readingRepo=FileRepository.getInstance(Reading.class,"reading.dat");
 
         GrammarService grammarService= new GrammarService(grammarRepo, studentRepo, teacherRepo);
         GrammarController grammarController = new GrammarController(grammarService);

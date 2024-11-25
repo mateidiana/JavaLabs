@@ -31,14 +31,41 @@ public class WritingService {
         this.teacherRepo=teacherRepo;
     }
 
+
+    public Student getStudentById(Integer studentId){
+        for (Student student : studentRepo.getObjects()) {
+            if (student.getId() == studentId)
+                return student;
+        }
+        return null;
+    }
+
+    public Teacher getTeacher1ById(Integer teacherId){
+        for (Teacher teacher : teacherRepo.getObjects()) {
+            if (teacher.getId() == teacherId)
+                return teacher;
+        }
+        return null;
+    }
+
+    public Writing getWritingById(Integer writingId){
+        for (Writing writing : writingRepo.getObjects()) {
+            if (writing.getId() ==writingId)
+                return writing;
+        }
+        return null;
+    }
+
     /**
      * Enrolls a student in a specific writing course
      * @param studentId refers to the student to be enrolled
      * @param writingCourseId refers to the id of the course the student is being enrolled in
      */
     public void enroll(Integer studentId, Integer writingCourseId) {
-        Student student = studentRepo.getById(studentId);
-        Writing course = writingRepo.getById(writingCourseId);
+//        Student student = studentRepo.getById(studentId);
+//        Writing course = writingRepo.getById(writingCourseId);
+        Student student = getStudentById(studentId);
+        Writing course = getWritingById(writingCourseId);
         studentRepo.delete(student);
         writingRepo.delete(course);
         if (course.getAvailableSlots() > course.getEnrolledStudents().size()) {
@@ -55,8 +82,10 @@ public class WritingService {
      * @param courseId Refers to the course the student practices in
      */
     public void practiceWriting(Integer studentId, Integer courseId) {
-        Student student = studentRepo.getById(studentId);
-        Writing course = writingRepo.getById(courseId);
+//        Student student = studentRepo.getById(studentId);
+//        Writing course = writingRepo.getById(courseId);
+        Student student = getStudentById(studentId);
+        Writing course = getWritingById(courseId);
 
         Scanner scanner = new Scanner(System.in);
         StringBuilder answer = new StringBuilder();
@@ -117,7 +146,9 @@ public class WritingService {
      * @return all students enrolled in a vocabulary course
      */
     public List<Student> getEnrolledStudents(Integer courseId) {
-        Writing course = writingRepo.getById(courseId);
+        //Writing course = writingRepo.getById(courseId);
+
+        Writing course = getWritingById(courseId);
         return course.getEnrolledStudents();
     }
 
@@ -125,7 +156,8 @@ public class WritingService {
      * Shows all students enrolled in at least one writing course
      */
     public void showEnrolledWritingCourses(Integer studentId){
-        Student student=studentRepo.getById(studentId);
+//        Student student=studentRepo.getById(studentId);
+        Student student=getStudentById(studentId);
         for (Course course:student.getCourses())
             if (course.getCourseName().contains("Writing"))
                 System.out.println(course);
@@ -136,7 +168,7 @@ public class WritingService {
      * @param teacherId refers to a teacher
      */
     public void viewCourseTaughtByTeacher(Integer teacherId){
-        Teacher teacher=teacherRepo.getById(teacherId);
+        //Teacher teacher=teacherRepo.getById(teacherId);
         for(Writing course:writingRepo.getObjects())
             if (course.getTeacher().getId()==teacherId)
                 System.out.println(course.getCourseName());
@@ -165,7 +197,8 @@ public class WritingService {
 
 
     public void createWritingCourse(Integer courseId, Integer teacherId, String courseName, Integer maxStudents) {
-        Teacher teacher = teacherRepo.getById(teacherId);
+//        Teacher teacher = teacherRepo.getById(teacherId);
+        Teacher teacher = getTeacher1ById(teacherId);
         Writing w1 = new Writing(courseId, courseName, teacher, maxStudents);
         String exercise="Schreibe einen Text über den Frühling. :3";
         w1.setRequirement(exercise);
@@ -173,8 +206,10 @@ public class WritingService {
     }
 
     public void updateWritingCourse(Integer courseId, Integer teacherId, String courseName, Integer maxStudents) {
-        Writing course = writingRepo.getById(courseId);
-        Teacher teacher = teacherRepo.getById(teacherId);
+//        Writing course = writingRepo.getById(courseId);
+        Writing course = getWritingById(courseId);
+        //Teacher teacher = teacherRepo.getById(teacherId);
+        Teacher teacher = getTeacher1ById(teacherId);
         Writing w1 = new Writing(courseId, courseName, teacher, maxStudents);
         String exercise="Schreibe einen Text über den Frühling. :3";
         w1.setRequirement(exercise);
@@ -187,7 +222,8 @@ public class WritingService {
      * @param teacherId Refers to the teacher who removes the course
      */
     public void removeCourse(Integer courseId, Integer teacherId) {
-        Writing course = writingRepo.getById(courseId);
+        //Writing course = writingRepo.getById(courseId);
+        Writing course = getWritingById(courseId);
         if (course.getTeacher().getId() == teacherId) {
             writingRepo.delete(course);
         } else {
@@ -200,7 +236,8 @@ public class WritingService {
      * @param studentId identifies a student
      */
     public void showFeedback(Integer studentId){
-        Student student=studentRepo.getById(studentId);
+//        Student student=studentRepo.getById(studentId);
+        Student student=getStudentById(studentId);
         Map<Integer, Float> writingFeedback=new HashMap<>();
         writingFeedback=student.getWritingFeedback();
         System.out.println("Your past scores: ");
@@ -215,8 +252,10 @@ public class WritingService {
      * @param courseId identifies a course
      */
     public void gradeFeedback(Integer teacherId, Integer courseId){
-        Teacher teacher= teacherRepo.getById(teacherId);
-        Writing course= writingRepo.getById(courseId);
+//        Teacher teacher= teacherRepo.getById(teacherId);
+//        Writing course= writingRepo.getById(courseId);
+        Teacher teacher= getTeacher1ById(teacherId);
+        Writing course= getWritingById(courseId);
         Scanner scanner=new Scanner(System.in);
         Map<Student, String> toGrade=teacher.getFeedbackWriting();
         System.out.println(toGrade);
@@ -242,13 +281,16 @@ public class WritingService {
      * @param courseId Exam whose teacher is being replaced
      */
     public void changeTeacherAccessToWritingCourse(Integer courseId, Integer teacherId){
-        Writing course=writingRepo.getById(courseId);
-        Teacher teacher=teacherRepo.getById(teacherId);
+//        Writing course=writingRepo.getById(courseId);
+//        Teacher teacher=teacherRepo.getById(teacherId);
+        Teacher teacher= getTeacher1ById(teacherId);
+        Writing course= getWritingById(courseId);
         course.setTeacher(teacher);
     }
 
     public void getTeacherById(Integer teacherId){
-        Teacher teacher=teacherRepo.getById(teacherId);
+//        Teacher teacher=teacherRepo.getById(teacherId);
+        Teacher teacher=getTeacher1ById(teacherId);
         System.out.println(teacher);
     }
 

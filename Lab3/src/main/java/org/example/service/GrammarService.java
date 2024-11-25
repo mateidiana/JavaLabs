@@ -25,6 +25,31 @@ public class GrammarService {
         this.teacherRepo=teacherRepo;
     }
 
+
+    public Student getStudentById(Integer studentId){
+        for (Student student : studentRepo.getObjects()) {
+            if (student.getId() == studentId)
+                return student;
+        }
+        return null;
+    }
+
+    public Teacher getTeacherById(Integer teacherId){
+        for (Teacher teacher : teacherRepo.getObjects()) {
+            if (teacher.getId() == teacherId)
+                return teacher;
+        }
+        return null;
+    }
+
+    public Grammar getGrammarById(Integer grammarId){
+        for (Grammar grammar : grammarRepo.getObjects()) {
+            if (grammar.getId() == grammarId)
+                return grammar;
+        }
+        return null;
+    }
+
     /**
      * Updates a student's past mistakes in form of a matrix
      * @param originalMatrix Refers to a student's past mistakes
@@ -63,8 +88,10 @@ public class GrammarService {
      * @param grammarCourseId refers to the id of the course the student is being enrolled in
      */
     public void enroll(Integer studentId, Integer grammarCourseId) {
-        Student student = studentRepo.getById(studentId);
-        Grammar course = grammarRepo.getById(grammarCourseId);
+//        Student student = studentRepo.getById(studentId);
+//        Grammar course = grammarRepo.getById(grammarCourseId);
+        Student student = getStudentById(studentId);
+        Grammar course = getGrammarById(grammarCourseId);
         studentRepo.delete(student);
         grammarRepo.delete(course);
         if (course.getAvailableSlots() > course.getEnrolledStudents().size()) {
@@ -81,8 +108,10 @@ public class GrammarService {
      * @param courseId Refers to the course a student made mistakes in
      */
     public void reviewPastMistakes(Integer studentId, Integer courseId) {
-        Student student = studentRepo.getById(studentId);
-        Grammar course = grammarRepo.getById(courseId);
+//        Student student = studentRepo.getById(studentId);
+//        Grammar course = grammarRepo.getById(courseId);
+        Student student = getStudentById(studentId);
+        Grammar course = getGrammarById(courseId);
         String[][] newMistakes=new String[1][2];
         String[][] pastGrammarMistakes = student.getPastGrammarMistakes();
         String[] exercise;
@@ -117,8 +146,10 @@ public class GrammarService {
      * @param courseId Refers to the course the student practices in
      */
     public void practiceGrammar(Integer studentId, Integer courseId) {
-        Student student = studentRepo.getById(studentId);
-        Grammar course = grammarRepo.getById(courseId);
+//        Student student = studentRepo.getById(studentId);
+//        Grammar course = grammarRepo.getById(courseId);
+        Student student = getStudentById(studentId);
+        Grammar course = getGrammarById(courseId);
         String []exercise;
         String[][] exercises=course.getExercises();
         Scanner scanner = new Scanner(System.in);
@@ -178,7 +209,9 @@ public class GrammarService {
      * @return all students enrolled in a grammar course
      */
     public List<Student> getEnrolledStudents(Integer courseId) {
-        Grammar course = grammarRepo.getById(courseId);
+        //Grammar course = grammarRepo.getById(courseId);
+
+        Grammar course = getGrammarById(courseId);
         return course.getEnrolledStudents();
     }
 
@@ -188,7 +221,8 @@ public class GrammarService {
      * @param teacherId Refers to the teacher who removes the course
      */
     public void removeCourse(Integer courseId, Integer teacherId) {
-        Grammar course = grammarRepo.getById(courseId);
+        //Grammar course = grammarRepo.getById(courseId);
+        Grammar course = getGrammarById(courseId);
         if (course.getTeacher().getId() == teacherId) {
             grammarRepo.delete(course);
         } else {
@@ -201,7 +235,7 @@ public class GrammarService {
      * @param teacherId refers to a specific teacher
      */
     public void viewCourseTaughtByTeacher(Integer teacherId) {
-        Teacher teacher = teacherRepo.getById(teacherId);
+        //Teacher teacher = teacherRepo.getById(teacherId);
         for (Grammar course : grammarRepo.getObjects()) {
             if (course.getTeacher().getId() == teacherId) {
                 System.out.println(course.getCourseName());
@@ -231,7 +265,8 @@ public class GrammarService {
     }
 
     public void createGrammarCourse(Integer courseId, Integer teacherId, String courseName, Integer maxStudents) {
-        Teacher teacher = teacherRepo.getById(teacherId);
+        //Teacher teacher = teacherRepo.getById(teacherId);
+        Teacher teacher = getTeacherById(teacherId);
         Grammar g1 = new Grammar(courseId, courseName, teacher, maxStudents);
         String [][] grammarExercises={
                 { "Du (brauchen) _ Hilfe.", "brauchst" },
@@ -250,8 +285,12 @@ public class GrammarService {
     }
 
     public void updateGrammarCourse(Integer courseId, Integer teacherId, String courseName, Integer maxStudents) {
-        Grammar course = grammarRepo.getById(courseId);
-        Teacher teacher = teacherRepo.getById(teacherId);
+//        Grammar course = grammarRepo.getById(courseId);
+//        Teacher teacher = teacherRepo.getById(teacherId);
+
+        Grammar course = getGrammarById(courseId);
+        Teacher teacher = getTeacherById(teacherId);
+
         Grammar g1 = new Grammar(courseId, courseName, teacher, maxStudents);
         String [][] grammarExercises={
                 { "Du (brauchen) _ Hilfe.", "brauchst" },
@@ -275,8 +314,10 @@ public class GrammarService {
      * @param courseId Exam whose teacher is being replaced
      */
     public void changeTeacherAccessToGrammarCourse(Integer courseId, Integer teacherId){
-        Grammar course=grammarRepo.getById(courseId);
-        Teacher teacher=teacherRepo.getById(teacherId);
+//        Grammar course=grammarRepo.getById(courseId);
+//        Teacher teacher=teacherRepo.getById(teacherId);
+        Grammar course = getGrammarById(courseId);
+        Teacher teacher = getTeacherById(teacherId);
         course.setTeacher(teacher);
     }
 
@@ -298,7 +339,8 @@ public class GrammarService {
      * @param studentId identifies a student
      */
     public void showEnrolledGrammarCourses(Integer studentId){
-        Student student = studentRepo.getById(studentId);
+        //Student student = studentRepo.getById(studentId);
+        Student student = getStudentById(studentId);
         for (Course course:student.getCourses())
             if (course.getCourseName().contains("Grammar"))
                 System.out.println(course);

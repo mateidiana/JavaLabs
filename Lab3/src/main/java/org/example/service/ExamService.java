@@ -42,6 +42,22 @@ public class ExamService {
         return null;
     }
 
+    public Teacher getTeacherById(Integer teacherId){
+        for (Teacher teacher : teacherRepo.getObjects()) {
+            if (teacher.getId() == teacherId)
+                return teacher;
+        }
+        return null;
+    }
+
+    public Exam getExamById(Integer examId){
+        for (Exam exam : examRepo.getObjects()) {
+            if (exam.getId() == examId)
+                return exam;
+        }
+        return null;
+    }
+
     /**
      * A student must answer to some true/false questions about a literary text, the right/ wrong answers affect the score
      * @param studentId Identifies the student that takes a reading exam
@@ -50,7 +66,8 @@ public class ExamService {
     public void takeReadingExam(Integer studentId, Integer examId){
         //Student student = studentRepo.getById(studentId);
         Student student=getStudentById(studentId);
-        Exam exam = examRepo.getById(examId);
+        //Exam exam = examRepo.getById(examId);
+        Exam exam=getExamById(examId);
         String[][] exercises=exam.getExercises();
         Scanner scanner = new Scanner(System.in);
         String[] exercise;
@@ -121,7 +138,8 @@ public class ExamService {
      * @param studentId Shows for a student all scores of all taken reading exams
      */
     public void showReadingResults(Integer studentId){
-        Student student = studentRepo.getById(studentId);
+        //Student student = studentRepo.getById(studentId);
+        Student student=getStudentById(studentId);
         Map<Integer, Float> readingExamResults=new HashMap<>();
         readingExamResults=student.getReadingResults();
         System.out.println("Your past scores: ");
@@ -137,8 +155,10 @@ public class ExamService {
      * @param examId Identifies the grammar exam that is being taken
      */
     public void takeGrammarExam(Integer studentId, Integer examId){
-        Student student = studentRepo.getById(studentId);
-        Exam exam = examRepo.getById(examId);
+        //Student student = studentRepo.getById(studentId);
+        Student student=getStudentById(studentId);
+        //Exam exam = examRepo.getById(examId);
+        Exam exam=getExamById(examId);
         String []exercise;
         String[][] exercises=exam.getExercises();
         Scanner scanner = new Scanner(System.in);
@@ -188,7 +208,8 @@ public class ExamService {
      * @param studentId Shows for a student all scores of all taken grammar exams
      */
     public void showGrammarResults(Integer studentId){
-        Student student = studentRepo.getById(studentId);
+        //Student student = studentRepo.getById(studentId);
+        Student student=getStudentById(studentId);
         Map<Integer, Float> grammarExamResults=new HashMap<>();
         grammarExamResults=student.getGrammarResults();
         System.out.println("Your past scores: ");
@@ -204,8 +225,10 @@ public class ExamService {
      * @param examId Identifies the vocabulary exam that is being taken
      */
     public void takeVocabExam(Integer studentId, Integer examId){
-        Student student = studentRepo.getById(studentId);
-        Exam exam = examRepo.getById(examId);
+        //Student student = studentRepo.getById(studentId);
+        Student student=getStudentById(studentId);
+        //Exam exam = examRepo.getById(examId);
+        Exam exam=getExamById(examId);
 
         Scanner scanner = new Scanner(System.in);
         int correctAnswers=0;
@@ -269,7 +292,8 @@ public class ExamService {
      * @param studentId Shows for a student all scores of all taken vocabulary exams
      */
     public void showVocabResults(Integer studentId){
-        Student student = studentRepo.getById(studentId);
+        //Student student = studentRepo.getById(studentId);
+        Student student=getStudentById(studentId);
         Map<Integer, Float> vocabExamResults=new HashMap<>();
         vocabExamResults=student.getVocabResults();
         System.out.println("Your past scores: ");
@@ -286,8 +310,10 @@ public class ExamService {
      * @param examId Identifies the writing exam that is being taken
      */
     public void takeWritingExam(Integer studentId, Integer examId){
-        Student student = studentRepo.getById(studentId);
-        Exam exam = examRepo.getById(examId);
+        //Student student = studentRepo.getById(studentId);
+        Student student=getStudentById(studentId);
+        //Exam exam = examRepo.getById(examId);
+        Exam exam=getExamById(examId);
         Scanner scanner = new Scanner(System.in);
         StringBuilder answer = new StringBuilder();
 
@@ -332,7 +358,8 @@ public class ExamService {
      * @param studentId Shows for a student all scores of all taken writing exams
      */
     public void showWritingResults(Integer studentId){
-        Student student = studentRepo.getById(studentId);
+        //Student student = studentRepo.getById(studentId);
+        Student student=getStudentById(studentId);
         Map<Integer, Float> writingExamResults=new HashMap<>();
         writingExamResults=student.getWritingExamResults();
         System.out.println("Your past scores: ");
@@ -347,8 +374,9 @@ public class ExamService {
      * @param examId Refers to the writing exam that was taken
      */
     public void gradeWritings(Integer teacherId, Integer examId){
-        Teacher teacher= teacherRepo.getById(teacherId);
-        Exam exam= examRepo.getById(examId);
+        //Teacher teacher= teacherRepo.getById(teacherId);
+        //Exam exam= examRepo.getById(examId);
+        Exam exam=getExamById(examId);
         Scanner scanner=new Scanner(System.in);
         Map<Student, String> toGrade=exam.getTeacher().getGradeWriting();
         while (!toGrade.isEmpty()) {
@@ -399,7 +427,8 @@ public class ExamService {
      * @param examId Refers to a specific reading exam
      */
     public void removeReadingExam(Integer teacherId, Integer examId) {
-        Exam exam=examRepo.getById(examId);
+        //Exam exam=examRepo.getById(examId);
+        Exam exam=getExamById(examId);
         if (exam.getTeacher().getId()==teacherId){
             examRepo.delete(exam);
         }
@@ -436,7 +465,8 @@ public class ExamService {
      * @param examName Refers to the name given to an exam
      */
     public void createReadingExam(Integer examId, Integer teacherId,String examName){
-        Teacher teacher=teacherRepo.getById(teacherId);
+        //Teacher teacher=teacherRepo.getById(teacherId);
+        Teacher teacher=getTeacherById(teacherId);
         Exam e1=new Exam(examId,examName,teacher);
         String[][] readingExercises = {
                 {"Der Aufbruch\n" + "Franz Kafka","","",""},
@@ -457,8 +487,10 @@ public class ExamService {
      * @param examName Refers to the updated exam name
      */
     public void updateReadingExam(Integer examId, Integer teacherId,String examName){
-        Exam exam=examRepo.getById(examId);
-        Teacher teacher=teacherRepo.getById(teacherId);
+        //Exam exam=examRepo.getById(examId);
+        Exam exam=getExamById(examId);
+        Teacher teacher=getTeacherById(teacherId);
+        //Teacher teacher=teacherRepo.getById(teacherId);
         Exam e1=new Exam(examId,examName,teacher);
         String[][] readingExercises = {
                 {"Der Aufbruch\n" + "Franz Kafka","","",""},
@@ -499,7 +531,8 @@ public class ExamService {
      * @param examName Refers to the name given to an exam
      */
     public void createWritingExam(Integer examId, Integer teacherId, String examName) {
-        Teacher teacher = teacherRepo.getById(teacherId);
+        //Teacher teacher = teacherRepo.getById(teacherId);
+        Teacher teacher=getTeacherById(teacherId);
         Exam e1 = new Exam(examId, examName, teacher);
         String exercise="Schreibe einen Text über den Frühling. :3";
         e1.setRequirement(exercise);
@@ -513,8 +546,10 @@ public class ExamService {
      * @param examName Refers to the updated exam name
      */
     public void updateWritingExam(Integer examId, Integer teacherId, String examName) {
-        Exam exam = examRepo.getById(examId);
-        Teacher teacher = teacherRepo.getById(teacherId);
+        //Exam exam = examRepo.getById(examId);
+        //Teacher teacher = teacherRepo.getById(teacherId);
+        Exam exam=getExamById(examId);
+        Teacher teacher=getTeacherById(teacherId);
         Exam e1 = new Exam(examId, examName, teacher);
         String exercise="Schreibe einen Text über den Frühling. :3";
         e1.setRequirement(exercise);
@@ -527,7 +562,8 @@ public class ExamService {
      * @param examId Refers to a specific writing exam
      */
     public void removeWritingExam(Integer teacherId, Integer examId) {
-        Exam exam = examRepo.getById(examId);
+        //Exam exam = examRepo.getById(examId);
+        Exam exam=getExamById(examId);
         if (exam.getTeacher().getId() == teacherId) {
             examRepo.delete(exam);
         } else {
@@ -585,7 +621,8 @@ public class ExamService {
      * @param examName Refers to the name given to an exam
      */
     public void createGrammarExam(Integer examId, Integer teacherId, String examName) {
-        Teacher teacher = teacherRepo.getById(teacherId);
+        //Teacher teacher = teacherRepo.getById(teacherId);
+        Teacher teacher=getTeacherById(teacherId);
         Exam e1 = new Exam(examId, examName, teacher);
         String [][] grammarExercises={
                 { "Du (brauchen) _ Hilfe.", "brauchst" },
@@ -610,8 +647,10 @@ public class ExamService {
      * @param examName Refers to the updated exam name
      */
     public void updateGrammarExam(Integer examId, Integer teacherId, String examName) {
-        Exam exam = examRepo.getById(examId);
-        Teacher teacher = teacherRepo.getById(teacherId);
+        //Exam exam = examRepo.getById(examId);
+        Exam exam=getExamById(examId);
+        //Teacher teacher = teacherRepo.getById(teacherId);
+        Teacher teacher=getTeacherById(teacherId);
         Exam e1 = new Exam(examId, examName, teacher);
         String [][] grammarExercises={
                 { "Du (brauchen) _ Hilfe.", "brauchst" },
@@ -635,7 +674,8 @@ public class ExamService {
      * @param examId Refers to a specific grammar exam
      */
     public void removeGrammarExam(Integer teacherId, Integer examId) {
-        Exam exam = examRepo.getById(examId);
+        //Exam exam = examRepo.getById(examId);
+        Exam exam=getExamById(examId);
         if (exam.getTeacher().getId() == teacherId) {
             examRepo.delete(exam);
         } else {
@@ -670,7 +710,8 @@ public class ExamService {
      * @param examName Refers to the name given to an exam
      */
     public void createVocabularyExam(Integer examId, Integer teacherId, String examName) {
-        Teacher teacher = teacherRepo.getById(teacherId);
+        //Teacher teacher = teacherRepo.getById(teacherId);
+        Teacher teacher = getTeacherById(teacherId);
         Exam e1 = new Exam(examId, examName, teacher);
         Map<String, String> vocabularyExercises = new HashMap<>();
         vocabularyExercises.put("Hund", "dog");
@@ -695,8 +736,10 @@ public class ExamService {
      * @param examName Refers to the updated exam name
      */
     public void updateVocabularyExam(Integer examId, Integer teacherId, String examName) {
-        Exam exam = examRepo.getById(examId);
-        Teacher teacher = teacherRepo.getById(teacherId);
+        //Exam exam = examRepo.getById(examId);
+        Exam exam=getExamById(examId);
+        //Teacher teacher = teacherRepo.getById(teacherId);
+        Teacher teacher = getTeacherById(teacherId);
         Exam e1 = new Exam(examId, examName, teacher);
         Map<String, String> vocabularyExercises = new HashMap<>();
         vocabularyExercises.put("Hund", "dog");
@@ -720,7 +763,8 @@ public class ExamService {
      * @param examId Refers to a specific vocabulary exam
      */
     public void removeVocabularyExam(Integer teacherId, Integer examId) {
-        Exam exam = examRepo.getById(examId);
+        //Exam exam = examRepo.getById(examId);
+        Exam exam=getExamById(examId);
         if (exam.getTeacher().getId() == teacherId) {
             examRepo.delete(exam);
         } else {
@@ -780,8 +824,10 @@ public class ExamService {
      * @param examId Exam whose teacher is being replaced
      */
     public void changeTeacherAccessToExam(Integer teacherId, Integer examId) {
-        Exam exam = examRepo.getById(examId);
-        Teacher teacher = teacherRepo.getById(teacherId);
+//        Exam exam = examRepo.getById(examId);
+//        Teacher teacher = teacherRepo.getById(teacherId);
+        Exam exam = getExamById(examId);
+        Teacher teacher = getTeacherById(teacherId);
         exam.setTeacher(teacher);
 
     }

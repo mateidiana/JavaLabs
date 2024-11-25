@@ -4,10 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.example.model.*;
-import org.example.repo.GrammarRepository;
-import org.example.repo.ReadingRepository;
-import org.example.repo.StudentRepository;
-import org.example.repo.TeacherRepository;
+import org.example.repo.*;
 
 /**
  * Service class that provides business logic related to {@link Reading} objects.
@@ -16,16 +13,48 @@ import org.example.repo.TeacherRepository;
  */
 public class ReadingService {
 
-    private ReadingRepository readingRepo;
+    //private ReadingRepository readingRepo;
+
+    private final IRepository<Reading> readingRepo;
 
     private StudentRepository studentRepo;
 
     private TeacherRepository teacherRepo;
 
-    public ReadingService(ReadingRepository readingRepo, StudentRepository studentRepo, TeacherRepository teacherRepo) {
+//    public ReadingService(ReadingRepository readingRepo, StudentRepository studentRepo, TeacherRepository teacherRepo) {
+//        this.readingRepo = readingRepo;
+//        this.studentRepo = studentRepo;
+//        this.teacherRepo = teacherRepo;
+//    }
+
+    public ReadingService(IRepository<Reading> readingRepo, StudentRepository studentRepo, TeacherRepository teacherRepo) {
         this.readingRepo = readingRepo;
         this.studentRepo = studentRepo;
         this.teacherRepo = teacherRepo;
+    }
+
+    public Student getStudentById(Integer studentId){
+        for (Student student : studentRepo.getObjects()) {
+            if (student.getId() == studentId)
+                return student;
+        }
+        return null;
+    }
+
+    public Teacher getTeacherById(Integer teacherId){
+        for (Teacher teacher : teacherRepo.getObjects()) {
+            if (teacher.getId() == teacherId)
+                return teacher;
+        }
+        return null;
+    }
+
+    public Reading getReadingById(Integer readingId){
+        for (Reading reading : readingRepo.getObjects()) {
+            if (reading.getId() ==readingId)
+                return reading;
+        }
+        return null;
     }
 
     /**
@@ -35,8 +64,11 @@ public class ReadingService {
      */
     public void enroll(Integer studentId, Integer readingCourseId) {
         int alreadyEnrolled=0;
-        Student student = studentRepo.getById(studentId);
-        Reading course = readingRepo.getById(readingCourseId);
+//        Student student = studentRepo.getById(studentId);
+//        Reading course = readingRepo.getById(readingCourseId);
+
+        Student student = getStudentById(studentId);
+        Reading course = getReadingById(readingCourseId);
         for (Course course1:student.getCourses()){
             if (course1.getId()==course.getId())
                 alreadyEnrolled=1;
@@ -94,8 +126,10 @@ public class ReadingService {
      */
     public void practiceReading(Integer studentId, Integer courseId){
         System.out.println("\n\nLese den folgenden Text durch und beantworte die Fragen\n\n");
-        Student student = studentRepo.getById(studentId);
-        Reading course = readingRepo.getById(courseId);
+//        Student student = studentRepo.getById(studentId);
+//        Reading course = readingRepo.getById(courseId);
+        Student student = getStudentById(studentId);
+        Reading course = getReadingById(courseId);
         String[][] exercises=course.getExercises();
         Scanner scanner = new Scanner(System.in);
         String[] exercise;
@@ -156,7 +190,8 @@ public class ReadingService {
      */
     public void reviewPastReadingMistakes(Integer studentId){
         Scanner scanner = new Scanner(System.in);
-        Student student = studentRepo.getById(studentId);
+        //Student student = studentRepo.getById(studentId);
+        Student student = getStudentById(studentId);
         String[][] pastMistakes=student.getPastMistakes();
         int numRows = pastMistakes.length;
 
@@ -208,7 +243,9 @@ public class ReadingService {
      * @return all students enrolled in a reading course
      */
     public List<Student> getEnrolledStudents(Integer courseId) {
-        Reading course = readingRepo.getById(courseId);
+        //Reading course = readingRepo.getById(courseId);
+
+        Reading course = getReadingById(courseId);
         return course.getEnrolledStudents();
     }
 
@@ -217,7 +254,8 @@ public class ReadingService {
      * @param studentId identifies a student
      */
     public void showEnrolledReadingCourses(Integer studentId){
-        Student student = studentRepo.getById(studentId);
+        //Student student = studentRepo.getById(studentId);
+        Student student = getStudentById(studentId);
         for (Course course:student.getCourses())
             if (course.getCourseName().contains("Reading"))
                 System.out.println(course);
@@ -242,7 +280,9 @@ public class ReadingService {
      * @param teacherId Refers to the teacher who removes the course
      */
     public void removeCourse(Integer courseId, Integer teacherId) {
-        Reading course=readingRepo.getById(courseId);
+        //Reading course=readingRepo.getById(courseId);
+
+        Reading course = getReadingById(courseId);
         if (course.getTeacher().getId()==teacherId){
             readingRepo.delete(course);
         }
@@ -275,7 +315,8 @@ public class ReadingService {
     }
 
     public void createReadingCourse(Integer courseId, Integer teacherId,String courseName, Integer maxStudents, Integer exerciseSet){
-        Teacher teacher=teacherRepo.getById(teacherId);
+        //Teacher teacher=teacherRepo.getById(teacherId);
+        Teacher teacher=getTeacherById(teacherId);
         Reading r1=new Reading(courseId,courseName,teacher,maxStudents);
         if(exerciseSet==1)
         {
@@ -364,8 +405,10 @@ public class ReadingService {
     }
 
     public void updateReadingCourse(Integer courseId, Integer teacherId,String courseName, Integer maxStudents, Integer exerciseSet){
-        Reading course=readingRepo.getById(courseId);
-        Teacher teacher=teacherRepo.getById(teacherId);
+        //Reading course=readingRepo.getById(courseId);
+        //Teacher teacher=teacherRepo.getById(teacherId);
+        Teacher teacher=getTeacherById(teacherId);
+        Reading course=getReadingById(courseId);
         Reading r1=new Reading(courseId,courseName,teacher,maxStudents);
 
         if(exerciseSet==1)
@@ -461,8 +504,10 @@ public class ReadingService {
      * @param courseId Exam whose teacher is being replaced
      */
     public void changeTeacherAccessToCourse(Integer courseId, Integer teacherId){
-        Reading course=readingRepo.getById(courseId);
-        Teacher teacher=teacherRepo.getById(teacherId);
+//        Reading course=readingRepo.getById(courseId);
+//        Teacher teacher=teacherRepo.getById(teacherId);
+        Teacher teacher=getTeacherById(teacherId);
+        Reading course=getReadingById(courseId);
         course.setTeacher(teacher);
     }
 
@@ -471,7 +516,8 @@ public class ReadingService {
      * @param teacherId refers to a teacher
      */
     public void viewCourseTaughtByTeacher(Integer teacherId){
-        Teacher teacher=teacherRepo.getById(teacherId);
+        //Teacher teacher=teacherRepo.getById(teacherId);
+        Teacher teacher=getTeacherById(teacherId);
         for(Reading course:readingRepo.getObjects())
             if (course.getTeacher().getId()==teacherId)
                 System.out.println(course.getCourseName());
@@ -483,7 +529,8 @@ public class ReadingService {
      * @param courseId identifies a reading course
      */
     public void viewMandatoryBooks(Integer studentId, Integer courseId){
-        Reading course=readingRepo.getById(courseId);
+        //Reading course=readingRepo.getById(courseId);
+        Reading course=getReadingById(courseId);
         for (String book:course.getMandatoryBooks()){
             System.out.println(book);
         }
@@ -504,7 +551,8 @@ public class ReadingService {
      * @param book refers to a book title
      */
     public void addMandatoryBook(Integer teacherId, Integer courseId,String book){
-        Reading course=readingRepo.getById(courseId);
+        //Reading course=readingRepo.getById(courseId);
+        Reading course=getReadingById(courseId);
         if(course.getTeacher().getId()==teacherId)
         {
             course.getMandatoryBooks().add(book);
