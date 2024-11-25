@@ -54,7 +54,7 @@ public class GrammarService {
 
     public Grammar getGrammarById(Integer grammarId){
         for (Grammar grammar : grammarRepo.getObjects()) {
-            if (grammar.getId() == grammarId)
+            if (grammar.getId().equals(grammarId))
                 return grammar;
         }
         return null;

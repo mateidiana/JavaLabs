@@ -50,7 +50,7 @@ public class VocabService {
 
     public Vocabulary getVocabById(Integer vocabId){
         for (Vocabulary vocab : vocabRepo.getObjects()) {
-            if (vocab.getId() ==vocabId)
+            if (vocab.getId().equals(vocabId))
                 return vocab;
         }
         return null;

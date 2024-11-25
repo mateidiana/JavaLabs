@@ -384,11 +384,11 @@ public class Main {
         grammarController.changeTeacherAccessToGrammarCourse(10,1);
         examController.changeTeacherAccessToExam(1, 4);
 
-        for (Student student:studentRepo.getObjects()){
-            System.out.println(student);
-        }
-        Student stud=readingService.getStudentById(1);
-        Teacher t=readingService.getTeacherById(1);
+//        for (Student student:studentRepo.getObjects()){
+//            System.out.println(student);
+//        }
+//        Student stud=readingService.getStudentById(1);
+//        Teacher t=readingService.getTeacherById(1);
 //        System.out.println(stud);
 //        System.out.println(t);
 

@@ -55,7 +55,7 @@ public class ReadingService {
 
     public Reading getReadingById(Integer readingId){
         for (Reading reading : readingRepo.getObjects()) {
-            if (reading.getId() ==readingId)
+            if (reading.getId().equals(readingId))
                 return reading;
         }
         return null;
@@ -73,25 +73,25 @@ public class ReadingService {
 
         Student student = getStudentById(studentId);
         Reading course = getReadingById(readingCourseId);
-        System.out.println(student);
+        //System.out.println(student);
 
-        System.out.println(course);
+        //System.out.println(course);
         for (Course course1:student.getCourses()){
-            if (course1.getId()==course.getId())
+            if (course1.getId().equals(readingCourseId))
                 alreadyEnrolled=1;
         }
-        System.out.println(alreadyEnrolled);
+        //System.out.println(alreadyEnrolled);
         if (alreadyEnrolled==0){
             studentRepo.delete(student);
             readingRepo.delete(course);
             if (course.getAvailableSlots() > course.getEnrolledStudents().size()) {
                 course.getEnrolledStudents().add(student);
                 student.getCourses().add(course);
-                System.out.println(course);
+                //System.out.println(course);
                 readingRepo.save(course);
                 studentRepo.save(student);
-                for (Course course1:student.getCourses())
-                    System.out.println(course1);
+//                for (Course course1:student.getCourses())
+                    //System.out.println(course1);
             }
         }
         System.out.println("\n\n\n\n");
@@ -148,58 +148,63 @@ public class ReadingService {
 
 
         Student student = getStudentById(studentId);
-        System.out.println(student);
+        //System.out.println(student);
         Reading course = getReadingById(courseId);
-        System.out.println(course);
+        //System.out.println(course);
         String[][] exercises=course.getExercises();
         Scanner scanner = new Scanner(System.in);
         String[] exercise;
         int foundCourse=0;
         int mistakeCounter=0;
-        for (Course findCourse : student.getCourses()){
-            if (findCourse.getId()==course.getId())
-            {
-                foundCourse=1;
-                System.out.println(exercises[0][0]);
-                System.out.println(exercises[1][0]);
-                for (int i=2;i<6;i++)
-                {
-                    exercise=exercises[i];
-                    System.out.println(exercise[0]+exercise[1]+"\n"+exercise[2]);
-                    System.out.println("Your answer: ");
-                    char answer = scanner.nextLine().charAt(0);
-                    int found=0;
 
-                    if (answer=='a' || answer=='b')
+        for (Student stud:studentRepo.getObjects())
+            if (stud.getId().equals(studentId))
+                for (Course course1:stud.getCourses())
+                    if (course1.getId().equals(courseId))
                     {
-                        for (int j=1;j<=2;j++)
+                        foundCourse=1;
+                        System.out.println(exercises[0][0]);
+                        System.out.println(exercises[1][0]);
+                        for (int i=2;i<6;i++)
                         {
-                            if (exercise[j].charAt(0)==answer && exercise[j].charAt(1)=='.')
-                                if (exercise[j] == exercise[3])
-                                {
-                                    System.out.println("Correct! " + exercise[3]);
-                                    found=1;
-                                    break;
-                                }
-                        }
-                        if (found==0)
-                        {
-                            System.out.println("Wrong! The right answer was " + exercise[3]);
-                            mistakeCounter+=1;
-                            if (mistakeCounter==1)
+                            exercise=exercises[i];
+                            System.out.println(exercise[0]+exercise[1]+"\n"+exercise[2]);
+                            System.out.println("Your answer: ");
+                            char answer = scanner.nextLine().charAt(0);
+                            int found=0;
+
+                            if (answer=='a' || answer=='b')
                             {
-                                student.setPastMistakes(appendRow(student.getPastMistakes(),exercises[0]));
-                                student.setPastMistakes(appendRow(student.getPastMistakes(),exercises[1]));
+                                for (int j=1;j<=2;j++)
+                                {
+                                    if (exercise[j].charAt(0)==answer && exercise[j].charAt(1)=='.')
+                                        if (exercise[j] == exercise[3])
+                                        {
+                                            System.out.println("Correct! " + exercise[3]);
+                                            found=1;
+                                            break;
+                                        }
+                                }
+                                if (found==0)
+                                {
+                                    System.out.println("Wrong! The right answer was " + exercise[3]);
+                                    mistakeCounter+=1;
+                                    if (mistakeCounter==1)
+                                    {
+                                        student.setPastMistakes(appendRow(student.getPastMistakes(),exercises[0]));
+                                        student.setPastMistakes(appendRow(student.getPastMistakes(),exercises[1]));
+                                    }
+                                    student.setPastMistakes(appendRow(student.getPastMistakes(),exercise));
+                                }
                             }
-                            student.setPastMistakes(appendRow(student.getPastMistakes(),exercise));
+                            else
+                                System.out.println("Invalid choice!");
                         }
+                        System.out.println("\n\n\nPractice complete!\n\n\n");
                     }
-                    else
-                        System.out.println("Invalid choice!");
-                }
-                System.out.println("\n\n\nPractice complete!\n\n\n");
-            }
-        }
+
+
+
         if (foundCourse==0)
             System.out.println("\n\n\nYou are not enrolled in this course!");
 
@@ -280,8 +285,8 @@ public class ReadingService {
         for (Student stud:studentRepo.getObjects())
             if (stud.getId().equals(studentId))
                 for (Course course:stud.getCourses())
-            //if (course.getCourseName().contains("Reading"))
-                    System.out.println(course);
+                    if (course.getCourseName().contains("Reading"))
+                        System.out.println(course);
     }
 
     /**

@@ -47,7 +47,7 @@ public class Course implements Serializable {
      *
      * @return The ID of the course.
      */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

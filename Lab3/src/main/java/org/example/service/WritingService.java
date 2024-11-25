@@ -56,7 +56,7 @@ public class WritingService {
 
     public Writing getWritingById(Integer writingId){
         for (Writing writing : writingRepo.getObjects()) {
-            if (writing.getId() ==writingId)
+            if (writing.getId().equals(writingId))
                 return writing;
         }
         return null;
