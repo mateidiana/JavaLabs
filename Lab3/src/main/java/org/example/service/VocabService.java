@@ -5,10 +5,7 @@ import java.util.*;
 
 import org.example.model.*;
 import org.example.model.Vocabulary;
-import org.example.repo.ReadingRepository;
-import org.example.repo.TeacherRepository;
-import org.example.repo.VocabRepository;
-import org.example.repo.StudentRepository;
+import org.example.repo.*;
 
 /**
  * Service class that provides business logic related to {@link Vocabulary} objects.
@@ -16,10 +13,20 @@ import org.example.repo.StudentRepository;
  * like manipulating reading courses.
  */
 public class VocabService {
-    private VocabRepository vocabRepo;
-    private StudentRepository studentRepo;
-    private TeacherRepository teacherRepo;
-    public VocabService(VocabRepository vocabRepo, StudentRepository studentRepo, TeacherRepository teacherRepo ) {
+//    private VocabRepository vocabRepo;
+//    private StudentRepository studentRepo;
+//    private TeacherRepository teacherRepo;
+
+    private final IRepository<Vocabulary> vocabRepo;
+    private final IRepository<Student> studentRepo;
+    private final IRepository<Teacher> teacherRepo;
+
+//    public VocabService(VocabRepository vocabRepo, StudentRepository studentRepo, TeacherRepository teacherRepo ) {
+//        this.vocabRepo = vocabRepo;
+//        this.studentRepo = studentRepo;
+//        this.teacherRepo= teacherRepo;
+//    }
+    public VocabService(IRepository<Vocabulary> vocabRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo ) {
         this.vocabRepo = vocabRepo;
         this.studentRepo = studentRepo;
         this.teacherRepo= teacherRepo;

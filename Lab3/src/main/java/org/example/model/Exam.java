@@ -3,13 +3,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.io.Serializable;
 
 /**
  * The {@code Exam} class represents an exam, including its ID, name, teacher,
  * list of examined students, exercises, vocabulary (Worter), and student results.
  * It provides methods to manage and access these properties.
  */
-public class Exam {
+public class Exam implements Serializable{
     private Integer id;
     private String examName;
     private Teacher teacher;

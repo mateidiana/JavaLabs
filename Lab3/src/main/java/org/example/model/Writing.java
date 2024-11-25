@@ -1,12 +1,12 @@
 package org.example.model;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.io.Serializable;
 /**
  * The {@code Writing} class represents a specialized type of {@code Course} focused on writing skills.
  * It extends the {@code Course} class and introduces a specific requirement for writing assignments.
  */
-public class Writing extends Course {
+public class Writing extends Course implements Serializable{
 
     /**
      * Constructs a new {@code Writing} course with the specified ID, name, teacher,

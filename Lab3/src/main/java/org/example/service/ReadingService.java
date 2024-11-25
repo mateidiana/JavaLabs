@@ -17,9 +17,13 @@ public class ReadingService {
 
     private final IRepository<Reading> readingRepo;
 
-    private StudentRepository studentRepo;
+    //private StudentRepository studentRepo;
 
-    private TeacherRepository teacherRepo;
+    private final IRepository<Student> studentRepo;
+
+    //private TeacherRepository teacherRepo;
+
+    private final IRepository<Teacher> teacherRepo;
 
 //    public ReadingService(ReadingRepository readingRepo, StudentRepository studentRepo, TeacherRepository teacherRepo) {
 //        this.readingRepo = readingRepo;
@@ -27,7 +31,7 @@ public class ReadingService {
 //        this.teacherRepo = teacherRepo;
 //    }
 
-    public ReadingService(IRepository<Reading> readingRepo, StudentRepository studentRepo, TeacherRepository teacherRepo) {
+    public ReadingService(IRepository<Reading> readingRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo) {
         this.readingRepo = readingRepo;
         this.studentRepo = studentRepo;
         this.teacherRepo = teacherRepo;
@@ -35,7 +39,7 @@ public class ReadingService {
 
     public Student getStudentById(Integer studentId){
         for (Student student : studentRepo.getObjects()) {
-            if (student.getId() == studentId)
+            if (student.getId().equals(studentId))
                 return student;
         }
         return null;
@@ -43,7 +47,7 @@ public class ReadingService {
 
     public Teacher getTeacherById(Integer teacherId){
         for (Teacher teacher : teacherRepo.getObjects()) {
-            if (teacher.getId() == teacherId)
+            if (teacher.getId().equals(teacherId))
                 return teacher;
         }
         return null;
@@ -69,20 +73,33 @@ public class ReadingService {
 
         Student student = getStudentById(studentId);
         Reading course = getReadingById(readingCourseId);
+        System.out.println(student);
+
+        System.out.println(course);
         for (Course course1:student.getCourses()){
             if (course1.getId()==course.getId())
                 alreadyEnrolled=1;
         }
+        System.out.println(alreadyEnrolled);
         if (alreadyEnrolled==0){
             studentRepo.delete(student);
             readingRepo.delete(course);
             if (course.getAvailableSlots() > course.getEnrolledStudents().size()) {
                 course.getEnrolledStudents().add(student);
                 student.getCourses().add(course);
+                System.out.println(course);
                 readingRepo.save(course);
                 studentRepo.save(student);
+                for (Course course1:student.getCourses())
+                    System.out.println(course1);
             }
         }
+        System.out.println("\n\n\n\n");
+//        for (Student stud:studentRepo.getObjects())
+//            if (stud.getId().equals(studentId))
+//                for (Course course1:student.getCourses())
+//                    //System.out.println(course1);
+
 
     }
 
@@ -128,8 +145,12 @@ public class ReadingService {
         System.out.println("\n\nLese den folgenden Text durch und beantworte die Fragen\n\n");
 //        Student student = studentRepo.getById(studentId);
 //        Reading course = readingRepo.getById(courseId);
+
+
         Student student = getStudentById(studentId);
+        System.out.println(student);
         Reading course = getReadingById(courseId);
+        System.out.println(course);
         String[][] exercises=course.getExercises();
         Scanner scanner = new Scanner(System.in);
         String[] exercise;
@@ -255,10 +276,12 @@ public class ReadingService {
      */
     public void showEnrolledReadingCourses(Integer studentId){
         //Student student = studentRepo.getById(studentId);
-        Student student = getStudentById(studentId);
-        for (Course course:student.getCourses())
-            if (course.getCourseName().contains("Reading"))
-                System.out.println(course);
+        //Student student = getStudentById(studentId);
+        for (Student stud:studentRepo.getObjects())
+            if (stud.getId().equals(studentId))
+                for (Course course:stud.getCourses())
+            //if (course.getCourseName().contains("Reading"))
+                    System.out.println(course);
     }
 
     /**

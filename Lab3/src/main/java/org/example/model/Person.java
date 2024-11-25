@@ -1,11 +1,11 @@
 package org.example.model;
-
+import java.io.Serializable;
 /**
  * The {@code Person} class is an abstract class that represents a general person
  * with a name and an ID. It serves as a base class for other classes, such as {@code Student},
  * which extend and specialize the person-related features.
  */
-public abstract class Person {
+public abstract class Person implements Serializable{
     /** The name of the person */
     protected String name;
     /** The ID of the person */

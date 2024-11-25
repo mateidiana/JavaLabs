@@ -1,5 +1,6 @@
 package org.example.service;
 import org.example.model.Student;
+import org.example.repo.IRepository;
 import org.example.repo.StudentRepository;
 
 /**
@@ -13,7 +14,8 @@ public class StudentService {
     /**
      * The repository used to access and manipulate {@link Student} objects.
      */
-    private StudentRepository studentRepo;
+    //private StudentRepository studentRepo;
+    private final IRepository<Student> studentRepo;
 
     /**
      * Constructs a new {@link StudentService} with a given {@link StudentRepository}.
@@ -21,10 +23,13 @@ public class StudentService {
      *
      * @param studentRepo The {@link StudentRepository} used for managing student data.
      */
-    public StudentService(StudentRepository studentRepo){
+//    public StudentService(StudentRepository studentRepo){
+//        this.studentRepo=studentRepo;
+//    }
+
+    public StudentService(IRepository<Student> studentRepo){
         this.studentRepo=studentRepo;
     }
-
     /**
      * Creates a new {@link Student} if the provided student ID is not already in use.
      * It checks if the student ID exists in the repository and if not, saves the new student.

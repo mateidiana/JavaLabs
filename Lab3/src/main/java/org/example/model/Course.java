@@ -1,13 +1,13 @@
 package org.example.model;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.io.Serializable;
 /**
  * The {@code Course} class represents a course that has an ID, a name, a teacher,
  * a list of enrolled students, available slots for students, and a set of exercises.
  * It provides methods to manage and retrieve course details.
  */
-public class Course {
+public class Course implements Serializable {
     private Integer id;
     private String courseName;
     private Teacher teacher;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.io.Serializable;
 
 
 /**
@@ -11,7 +12,7 @@ import java.util.HashMap;
  * and maintain a record of various exam results, feedback, and past mistakes.
  * It provides methods to access and manipulate these records.
  */
-public class Student extends Person {
+public class Student extends Person implements Serializable{
     private final List<Course> courses = new ArrayList<>();
     private String[][] pastMistakes;
     private String[][] pastGrammarMistakes;

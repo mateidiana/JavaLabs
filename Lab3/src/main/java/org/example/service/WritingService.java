@@ -8,12 +8,9 @@ import java.util.HashMap;
 import org.example.model.Course;
 import org.example.model.Student;
 import org.example.model.Teacher;
-import org.example.repo.StudentRepository;
-import org.example.repo.TeacherRepository;
+import org.example.repo.*;
 
 import org.example.model.*;
-import org.example.repo.VocabRepository;
-import org.example.repo.WritingRepository;
 
 /**
  * Service class that provides business logic related to {@link Writing} objects.
@@ -21,11 +18,20 @@ import org.example.repo.WritingRepository;
  * like manipulating reading courses.
  */
 public class WritingService {
-    private WritingRepository writingRepo;
-    private StudentRepository studentRepo;
-    private TeacherRepository teacherRepo;
+//    private WritingRepository writingRepo;
+//    private StudentRepository studentRepo;
+//    private TeacherRepository teacherRepo;
+    private final IRepository<Writing> writingRepo;
+    private final IRepository<Student> studentRepo;
+    private final IRepository<Teacher> teacherRepo;
 
-    public WritingService(WritingRepository writingRepo, StudentRepository studentRepo, TeacherRepository teacherRepo) {
+//    public WritingService(WritingRepository writingRepo, StudentRepository studentRepo, TeacherRepository teacherRepo) {
+//        this.writingRepo = writingRepo;
+//        this.studentRepo = studentRepo;
+//        this.teacherRepo=teacherRepo;
+//    }
+
+    public WritingService(IRepository<Writing> writingRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo) {
         this.writingRepo = writingRepo;
         this.studentRepo = studentRepo;
         this.teacherRepo=teacherRepo;

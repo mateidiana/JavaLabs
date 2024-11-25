@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
-
+import java.io.Serializable;
 /**
  * The {@code Teacher} class represents a teacher who can teach multiple courses
  * and provide grades and feedback for writing assignments. This class extends
  * the {@code Person} class, inheriting its properties and methods.
  */
-public class Teacher extends Person {
+public class Teacher extends Person implements Serializable{
 
     private List<Course> teaches;
 

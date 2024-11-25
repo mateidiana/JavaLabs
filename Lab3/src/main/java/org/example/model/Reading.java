@@ -1,13 +1,13 @@
 package org.example.model;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.io.Serializable;
 /**
  * The {@code Reading} class represents a specialized type of {@code Course} focused on reading.
  * It extends the {@code Course} class and adds specific features related to reading,
  * such as a list of mandatory books required for the course.
  */
-public class Reading extends Course{
+public class Reading extends Course implements Serializable{
 
     /** A list of mandatory books that students are required to read for the course */
     private List<String> mandatoryBooks = new ArrayList<>();

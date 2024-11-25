@@ -1,6 +1,7 @@
 package org.example.service;
 import org.example.model.Student;
 import org.example.model.Teacher;
+import org.example.repo.IRepository;
 import org.example.repo.StudentRepository;
 import org.example.repo.TeacherRepository;
 /**
@@ -13,7 +14,8 @@ public class TeacherService {
     /**
      * The repository used to access and manipulate {@link Teacher} objects.
      */
-    private TeacherRepository teacherRepo;
+//    private TeacherRepository teacherRepo;
+    private final IRepository<Teacher> teacherRepo;
 
     /**
      * Constructs a new {@link TeacherService} with a given {@link TeacherRepository}.
@@ -21,7 +23,11 @@ public class TeacherService {
      *
      * @param teacherRepo The {@link TeacherRepository} used for managing teacher data.
      */
-    public TeacherService(TeacherRepository teacherRepo){
+//    public TeacherService(TeacherRepository teacherRepo){
+//        this.teacherRepo=teacherRepo;
+//    }
+
+    public TeacherService(IRepository<Teacher> teacherRepo){
         this.teacherRepo=teacherRepo;
     }
 

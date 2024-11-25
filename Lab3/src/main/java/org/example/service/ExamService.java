@@ -3,6 +3,7 @@ import java.util.*;
 
 import org.example.model.*;
 import org.example.repo.ExamRepository;
+import org.example.repo.IRepository;
 import org.example.repo.StudentRepository;
 import org.example.repo.TeacherRepository;
 
@@ -12,9 +13,13 @@ import org.example.repo.TeacherRepository;
  * like creating, grading and taking exams.
  */
 public class ExamService {
-    private ExamRepository examRepo;
-    private StudentRepository studentRepo;
-    private TeacherRepository teacherRepo;
+    //private ExamRepository examRepo;
+    private final IRepository<Exam> examRepo;
+    //private StudentRepository studentRepo;
+    private final IRepository<Student> studentRepo;
+    //private TeacherRepository teacherRepo;
+
+    private final IRepository<Teacher> teacherRepo;
 
     /**
      * Constructs an instance of the {@link ExamService} class with the specified repositories.
@@ -28,7 +33,13 @@ public class ExamService {
      * @param teacherRepo A repository for managing {@link Teacher} entities, providing methods to retrieve,
      *                    store, and update teacher data.
      */
-    public ExamService(ExamRepository examRepo, StudentRepository studentRepo, TeacherRepository teacherRepo) {
+//    public ExamService(ExamRepository examRepo, StudentRepository studentRepo, TeacherRepository teacherRepo) {
+//        this.examRepo = examRepo;
+//        this.studentRepo = studentRepo;
+//        this.teacherRepo=teacherRepo;
+//    }
+
+    public ExamService(IRepository<Exam> examRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo) {
         this.examRepo = examRepo;
         this.studentRepo = studentRepo;
         this.teacherRepo=teacherRepo;

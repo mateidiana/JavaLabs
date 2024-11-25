@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.example.model.*;
 import org.example.repo.GrammarRepository;
+import org.example.repo.IRepository;
 import org.example.repo.StudentRepository;
 import org.example.model.Student;
 import org.example.repo.TeacherRepository;
@@ -15,11 +16,20 @@ import org.example.repo.TeacherRepository;
  * like manipulating grammar courses.
  */
 public class GrammarService {
-    private GrammarRepository grammarRepo;
-    private StudentRepository studentRepo;
-    private TeacherRepository teacherRepo;
+    //private GrammarRepository grammarRepo;
+    //private StudentRepository studentRepo;
+    //private TeacherRepository teacherRepo;
+    private final IRepository<Grammar> grammarRepo;
+    private final IRepository<Student> studentRepo;
+    private final IRepository<Teacher> teacherRepo;
 
-    public GrammarService(GrammarRepository grammarRepo, StudentRepository studentRepo, TeacherRepository teacherRepo) {
+//    public GrammarService(GrammarRepository grammarRepo, StudentRepository studentRepo, TeacherRepository teacherRepo) {
+//        this.grammarRepo = grammarRepo;
+//        this.studentRepo = studentRepo;
+//        this.teacherRepo=teacherRepo;
+//    }
+
+    public GrammarService(IRepository<Grammar> grammarRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo) {
         this.grammarRepo = grammarRepo;
         this.studentRepo = studentRepo;
         this.teacherRepo=teacherRepo;
@@ -28,7 +38,7 @@ public class GrammarService {
 
     public Student getStudentById(Integer studentId){
         for (Student student : studentRepo.getObjects()) {
-            if (student.getId() == studentId)
+            if (student.getId().equals(studentId))
                 return student;
         }
         return null;
@@ -36,7 +46,7 @@ public class GrammarService {
 
     public Teacher getTeacherById(Integer teacherId){
         for (Teacher teacher : teacherRepo.getObjects()) {
-            if (teacher.getId() == teacherId)
+            if (teacher.getId().equals(teacherId))
                 return teacher;
         }
         return null;

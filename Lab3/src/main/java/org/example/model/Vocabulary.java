@@ -1,12 +1,12 @@
 package org.example.model;
 import java.util.Map;
 import java.util.HashMap;
-
+import java.io.Serializable;
 /**
  * The {@code Vocabulary} class represents a specialized type of {@code Course} focused on vocabulary learning.
  * It extends the {@code Course} class and adds specific features to manage a vocabulary list.
  */
-public class Vocabulary extends Course{
+public class Vocabulary extends Course implements Serializable{
 
     /** A map that holds vocabulary words and their meanings */
     Map <String, String> worter=new HashMap<>();
