@@ -1,14 +1,8 @@
 package org.example.service;
 import org.example.model.Student;
 import org.example.repo.IRepository;
-import org.example.repo.StudentRepository;
 
-/**
- * Service class that provides business logic related to {@link Student} objects.
- * It interacts with the {@link StudentRepository} to perform operations like creating a new student.
- *
- * This class handles the logic for ensuring that a student ID is unique before creating and saving the student.
- */
+
 public class StudentService {
 
     /**
@@ -17,12 +11,7 @@ public class StudentService {
     //private StudentRepository studentRepo;
     private final IRepository<Student> studentRepo;
 
-    /**
-     * Constructs a new {@link StudentService} with a given {@link StudentRepository}.
-     * This constructor is used for dependency injection of the repository.
-     *
-     * @param studentRepo The {@link StudentRepository} used for managing student data.
-     */
+
 //    public StudentService(StudentRepository studentRepo){
 //        this.studentRepo=studentRepo;
 //    }
@@ -38,14 +27,22 @@ public class StudentService {
      * @param name The name of the student to be created.
      */
     public void createStudent(Integer studentId, String name){
-        for(Student student:studentRepo.getObjects())
-            if (student.getId()==studentId){
+        for(Student student:studentRepo.getAll())
+            if (student.getId().equals(studentId)){
                 System.out.println("Id already in use!");
                 return;
             }
 
         Student student = new Student(name,studentId);
-        studentRepo.save(student);
+        studentRepo.create(student);
         System.out.println("Registration successful!");
+    }
+
+    public Student getStudentById(Integer studentId){
+        for (Student student : studentRepo.getAll()) {
+            if (student.getId().equals(studentId))
+                return student;
+        }
+        return null;
     }
 }

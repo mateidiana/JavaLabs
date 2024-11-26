@@ -48,7 +48,7 @@ public class WritingController {
      */
     public void viewCourses() {
         StringBuilder output = new StringBuilder("Available courses:\n");
-        writingService.getAvailableCourses().forEach(course -> output.append(course.toString()).append("\n"));
+        writingService.getAvailableCourses();
         System.out.println(output);
     }
 
@@ -122,13 +122,7 @@ public class WritingController {
         writingService.showFeedback(studentId);
     }
 
-    /**
-     * Changes a teacher's access to a specific writing course.
-     *
-     * @param courseId  the ID of the course
-     * @param teacherId the ID of the teacher
-     */
-    public void changeTeacherAccessToWritingCourse(Integer courseId, Integer teacherId){writingService.changeTeacherAccessToWritingCourse(courseId,teacherId);}
+
 
     public void getTeacherById(Integer teacherId){writingService.getTeacherById(teacherId);}
 

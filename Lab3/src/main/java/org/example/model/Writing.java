@@ -6,7 +6,7 @@ import java.io.Serializable;
  * The {@code Writing} class represents a specialized type of {@code Course} focused on writing skills.
  * It extends the {@code Course} class and introduces a specific requirement for writing assignments.
  */
-public class Writing extends Course implements Serializable{
+public class Writing extends Course{
 
     /**
      * Constructs a new {@code Writing} course with the specified ID, name, teacher,
@@ -26,7 +26,7 @@ public class Writing extends Course implements Serializable{
      * Gets the static text requirement for writing assignments.
      * return The text requirement for writing assignments.
      */
-    static String textRequirement;
+    String textRequirement;
     @Override
     public String toString() {
         return "Writing course{" +
@@ -34,6 +34,6 @@ public class Writing extends Course implements Serializable{
                 ", name='" + this.getCourseName() + '\'' +
                 '}';
     }
-    public static String getRequirement(){ return textRequirement;}
+    public String getRequirement(){ return textRequirement;}
     public void setRequirement(String text) {this.textRequirement=text;}
 }

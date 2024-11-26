@@ -226,13 +226,6 @@ public class ExamController {
         examService.showResultsOfAllStudentsOnGrammarExam(teacherId);
     }
 
-    /**
-     * Changes a teacher's access to a specific exam.
-     *
-     * @param teacherId the ID of the teacher
-     * @param examId the ID of the exam
-     */
-    public void changeTeacherAccessToExam(Integer teacherId, Integer examId){
-        examService.changeTeacherAccessToExam(teacherId, examId);
-    }
+
+
 }

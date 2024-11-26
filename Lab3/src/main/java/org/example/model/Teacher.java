@@ -10,7 +10,7 @@ import java.io.Serializable;
  * and provide grades and feedback for writing assignments. This class extends
  * the {@code Person} class, inheriting its properties and methods.
  */
-public class Teacher extends Person implements Serializable{
+public class Teacher extends Person {
 
     private List<Course> teaches;
 
@@ -57,9 +57,7 @@ public class Teacher extends Person implements Serializable{
 
     @Override
     public String toString() {
-        return "Teacher{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return "Teacher{" + super.toString() + '}';
     }
 }
+

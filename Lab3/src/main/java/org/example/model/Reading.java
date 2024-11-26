@@ -7,7 +7,7 @@ import java.io.Serializable;
  * It extends the {@code Course} class and adds specific features related to reading,
  * such as a list of mandatory books required for the course.
  */
-public class Reading extends Course implements Serializable{
+public class Reading extends Course{
 
     /** A list of mandatory books that students are required to read for the course */
     private List<String> mandatoryBooks = new ArrayList<>();

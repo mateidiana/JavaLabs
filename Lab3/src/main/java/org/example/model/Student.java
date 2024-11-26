@@ -1,5 +1,6 @@
 package org.example.model;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.io.Serializable;
  * and maintain a record of various exam results, feedback, and past mistakes.
  * It provides methods to access and manipulate these records.
  */
-public class Student extends Person implements Serializable{
+public class Student extends Person {
     private final List<Course> courses = new ArrayList<>();
     private String[][] pastMistakes;
     private String[][] pastGrammarMistakes;
@@ -112,9 +113,7 @@ public class Student extends Person implements Serializable{
 
     @Override
     public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return "Student{" + super.toString() + '}';
     }
 }
+

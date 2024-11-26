@@ -57,7 +57,7 @@ public class ReadingController {
      */
     public void viewCourses() {
         StringBuilder output = new StringBuilder("Available courses:\n");
-        readingService.getAvailableCourses().forEach(course -> output.append(course.toString()).append("\n"));
+        readingService.getAvailableCourses();
         System.out.println(output);
     }
 
@@ -92,15 +92,6 @@ public class ReadingController {
         //System.out.println("Removed course " + courseId);
     }
 
-    /**
-     * Changes a teacher's access to a specific reading course.
-     *
-     * @param courseId the ID of the course
-     * @param teacherId the ID of the teacher
-     */
-    public void changeTeacherAccess(Integer courseId, Integer teacherId){
-        readingService.changeTeacherAccessToCourse(courseId,teacherId);
-    }
 
     /**
      * Creates or updates a reading course with the specified details.

@@ -1,4 +1,6 @@
 package org.example.model;
+
+
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
@@ -7,8 +9,8 @@ import java.io.Serializable;
  * a list of enrolled students, available slots for students, and a set of exercises.
  * It provides methods to manage and retrieve course details.
  */
-public class Course implements Serializable {
-    private Integer id;
+public class Course extends Entity {
+
     private String courseName;
     private Teacher teacher;
     private List<Student> enrolledStudents;
@@ -25,30 +27,13 @@ public class Course implements Serializable {
      * @param maxStudents The maximum number of students who can enroll in the course.
      */
     public Course(Integer id, String courseName, Teacher teacher, Integer maxStudents) {
-        this.id = id;
+        super(id);
+
         this.courseName = courseName;
         this.teacher = teacher;
         this.availableSlots = maxStudents;
         this.enrolledStudents = new ArrayList<>();
         this.exercises=new String[100][100];
-    }
-
-    /**
-     * Sets the ID of the course.
-     *
-     * @param id The new ID of the course.
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    /**
-     * Gets the ID of the course.
-     *
-     * @return The ID of the course.
-     */
-    public Integer getId() {
-        return id;
     }
 
     /**
@@ -149,10 +134,11 @@ public class Course implements Serializable {
     @Override
     public String toString() {
         return "Course{" +
-                "id=" + id +
+                super.toString() +
                 ", courseName='" + courseName + '\'' +
                 ", teacher=" + teacher +
                 ", availableSlots=" + availableSlots +
                 '}';
     }
 }
+

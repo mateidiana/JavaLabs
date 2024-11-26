@@ -38,7 +38,7 @@ public class GrammarController {
      */
     public void viewCourses() {
         StringBuilder output = new StringBuilder("Available courses:\n");
-        grammarService.getAvailableCourses().forEach(course -> output.append(course.toString()).append("\n"));
+        grammarService.getAvailableCourses();
         System.out.println(output);
     }
 
@@ -104,13 +104,6 @@ public class GrammarController {
         grammarService.createOrUpdateGrammarCourse(courseId, teacherId, courseName, maxStudents);
     }
 
-    /**
-     * Changes a teacher's access to a specific grammar course.
-     *
-     * @param courseId the ID of the course
-     * @param teacherId the ID of the teacher
-     */
-    public void changeTeacherAccessToGrammarCourse(Integer courseId, Integer teacherId){grammarService.changeTeacherAccessToGrammarCourse(courseId,teacherId);}
 
     /**
      * Displays all students enrolled in grammar courses.

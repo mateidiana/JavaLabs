@@ -1,15 +1,15 @@
 package org.example.controller;
-import org.example.service.VocabService;
+import org.example.service.VocabularyService;
 
 /**
- * The {@code VocabController} class manages operations related to vocabulary courses.
- * It acts as an intermediary between the view and the {@code VocabService}, handling
+ * The {@code VocabularyController} class manages operations related to vocabulary courses.
+ * It acts as an intermediary between the view and the {@code VocabularyService}, handling
  * functionalities such as student enrollment, course management, vocabulary practice,
  * and reviewing student mistakes.
  */
 public class VocabController {
-    private VocabService vocabService;
-    public VocabController(VocabService vocabService){
+    private VocabularyService vocabService;
+    public VocabController(VocabularyService vocabService){
         this.vocabService=vocabService;
     }
 
@@ -39,7 +39,7 @@ public class VocabController {
      */
     public void viewCourses() {
         StringBuilder output = new StringBuilder("Available courses:\n");
-        vocabService.getAvailableCourses().forEach(course -> output.append(course.toString()).append("\n"));
+        vocabService.getAvailableCourses();
         System.out.println(output);
     }
 
@@ -78,8 +78,8 @@ public class VocabController {
      *
      * @param courseId the ID of the course
      */
-    public void deleteCourse(Integer courseId) {
-        vocabService.removeCourse(courseId);
+    public void deleteCourse(Integer courseId, Integer teacherId) {
+        vocabService.removeVocabularyCourse(courseId,teacherId);
         System.out.println("Removed course " + courseId);
     }
 
@@ -115,22 +115,14 @@ public class VocabController {
     }
 
     /**
-     * Changes a teacher's access to a specific vocabulary course.
-     *
-     * @param courseId  the ID of the course
-     * @param teacherId the ID of the teacher
-     */
-    public void changeTeacherAccessToVocabCourse(Integer courseId, Integer teacherId){vocabService.changeTeacherAccessToVocabCourse(courseId,teacherId);}
-
-    /**
      * Displays all students enrolled in any vocabulary courses.
      */
-    public void showStudentsEnrolledInVocabCourses(){vocabService.showStudentsEnrolledInVocabCourses();}
+    public void showStudentsEnrolledInVocabularyCourses(){vocabService.showStudentsEnrolledInVocabCourses();}
 
     /**
      * Displays all vocabulary courses a student is enrolled in
      * @param studentId identifies a student
      */
-    public void showEnrolledVocabCourses(Integer studentId){vocabService.showEnrolledVocabCourses(studentId);}
+    public void showEnrolledVocabularyCourses(Integer studentId){vocabService.showEnrolledVocabCourses(studentId);}
 
 }

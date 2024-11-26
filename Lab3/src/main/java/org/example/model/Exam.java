@@ -10,15 +10,15 @@ import java.io.Serializable;
  * list of examined students, exercises, vocabulary (Worter), and student results.
  * It provides methods to manage and access these properties.
  */
-public class Exam implements Serializable{
-    private Integer id;
+public class Exam extends Entity{
+
     private String examName;
     private Teacher teacher;
     private List<Student> examinedStudents;
     private String[][] exercises;
     Map <String, String> worter=new HashMap<>();
     Map<Student,Float> results = new HashMap<>();
-    static String textRequirement;
+    private String textRequirement;
 
     /**
      * Constructs a new {@code Exam} with the specified ID, name, and teacher.
@@ -29,7 +29,7 @@ public class Exam implements Serializable{
      * @param teacher   The teacher administering the exam.
      */
     public Exam(Integer id, String examName, Teacher teacher) {
-        this.id = id;
+        super(id);
         this.examName = examName;
         this.teacher = teacher;
         this.examinedStudents = new ArrayList<>();
@@ -37,13 +37,6 @@ public class Exam implements Serializable{
         this.results=new HashMap<>();
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
 
     public String getExamName() {
         return examName;
@@ -131,7 +124,7 @@ public class Exam implements Serializable{
      *
      * @return The requirement text.
      */
-    public static String getRequirement(){ return textRequirement;}
+    public String getRequirement(){ return textRequirement;}
 
     /**
      * Sets the static text requirement for the writing exam.
@@ -148,7 +141,7 @@ public class Exam implements Serializable{
     @Override
     public String toString() {
         return "Exam{" +
-                "id=" + id +
+                super.toString() +
                 ", courseName='" + examName + '\'' +
                 ", teacher=" + teacher +
                 '}';

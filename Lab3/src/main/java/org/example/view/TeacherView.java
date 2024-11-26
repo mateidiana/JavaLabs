@@ -214,7 +214,7 @@ public class TeacherView {
                     vocabController.viewCourseTaughtByTeacher(readTeacherId(scanner));
                     break;
                 case "2":
-                    vocabController.showStudentsEnrolledInVocabCourses();
+                    vocabController.showStudentsEnrolledInVocabularyCourses();
                     break;
                 case "3":
                     vocabController.createOrUpdateVocabularyCourse(readCourseId(scanner),readTeacherId(scanner),readCourseName(scanner),readMaxStudents(scanner));

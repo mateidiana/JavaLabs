@@ -192,7 +192,7 @@ public class StudentView {
                     continueLoop = false;
                     break;
                 case "1":
-                    vocabController.showEnrolledVocabCourses(readStudentId(scanner));
+                    vocabController.showEnrolledVocabularyCourses(readStudentId(scanner));
                     break;
                 case "2":
                     vocabController.practiceVocabulary(readStudentId(scanner),readCourseId(scanner));

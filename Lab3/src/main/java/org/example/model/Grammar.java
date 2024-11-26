@@ -5,7 +5,7 @@ import java.io.Serializable;
  * It extends the {@code Course} class, inheriting its properties and methods.
  * This class customizes the {@code Course} class to represent a grammar-specific course.
  */
-public class Grammar extends Course implements Serializable{
+public class Grammar extends Course {
 
     /**
      * Constructs a new {@code Grammar} course with the specified ID, name, teacher,

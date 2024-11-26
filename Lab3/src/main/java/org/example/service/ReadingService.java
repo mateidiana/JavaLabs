@@ -5,31 +5,12 @@ import java.util.Random;
 
 import org.example.model.*;
 import org.example.repo.*;
-
-/**
- * Service class that provides business logic related to {@link Reading} objects.
- * It interacts with the {@link ReadingRepository}, {@link StudentRepository}, {@link TeacherRepository} to perform operations
- * like manipulating reading courses.
- */
 public class ReadingService {
-
-    //private ReadingRepository readingRepo;
-
     private final IRepository<Reading> readingRepo;
-
-    //private StudentRepository studentRepo;
 
     private final IRepository<Student> studentRepo;
 
-    //private TeacherRepository teacherRepo;
-
     private final IRepository<Teacher> teacherRepo;
-
-//    public ReadingService(ReadingRepository readingRepo, StudentRepository studentRepo, TeacherRepository teacherRepo) {
-//        this.readingRepo = readingRepo;
-//        this.studentRepo = studentRepo;
-//        this.teacherRepo = teacherRepo;
-//    }
 
     public ReadingService(IRepository<Reading> readingRepo, IRepository<Student> studentRepo, IRepository<Teacher> teacherRepo) {
         this.readingRepo = readingRepo;
@@ -38,7 +19,7 @@ public class ReadingService {
     }
 
     public Student getStudentById(Integer studentId){
-        for (Student student : studentRepo.getObjects()) {
+        for (Student student : studentRepo.getAll()) {
             if (student.getId().equals(studentId))
                 return student;
         }
@@ -46,7 +27,7 @@ public class ReadingService {
     }
 
     public Teacher getTeacherById(Integer teacherId){
-        for (Teacher teacher : teacherRepo.getObjects()) {
+        for (Teacher teacher : teacherRepo.getAll()) {
             if (teacher.getId().equals(teacherId))
                 return teacher;
         }
@@ -54,61 +35,45 @@ public class ReadingService {
     }
 
     public Reading getReadingById(Integer readingId){
-        for (Reading reading : readingRepo.getObjects()) {
+        for (Reading reading : readingRepo.getAll()) {
             if (reading.getId().equals(readingId))
                 return reading;
         }
         return null;
     }
 
-    /**
-     * Enrolls a student in a specific reading course
-     * @param studentId refers to the student to be enrolled
-     * @param readingCourseId refers to the id of the course the student is being enrolled in
-     */
     public void enroll(Integer studentId, Integer readingCourseId) {
         int alreadyEnrolled=0;
-//        Student student = studentRepo.getById(studentId);
-//        Reading course = readingRepo.getById(readingCourseId);
 
         Student student = getStudentById(studentId);
         Reading course = getReadingById(readingCourseId);
-        //System.out.println(student);
 
-        //System.out.println(course);
         for (Course course1:student.getCourses()){
             if (course1.getId().equals(readingCourseId))
                 alreadyEnrolled=1;
         }
-        //System.out.println(alreadyEnrolled);
+
         if (alreadyEnrolled==0){
-            studentRepo.delete(student);
-            readingRepo.delete(course);
+            studentRepo.delete(studentId);
+            readingRepo.delete(readingCourseId);
             if (course.getAvailableSlots() > course.getEnrolledStudents().size()) {
                 course.getEnrolledStudents().add(student);
                 student.getCourses().add(course);
-                //System.out.println(course);
-                readingRepo.save(course);
-                studentRepo.save(student);
-//                for (Course course1:student.getCourses())
-                    //System.out.println(course1);
+                readingRepo.create(course);
+                studentRepo.create(student);
             }
         }
-        System.out.println("\n\n\n\n");
-//        for (Student stud:studentRepo.getObjects())
-//            if (stud.getId().equals(studentId))
-//                for (Course course1:student.getCourses())
-//                    //System.out.println(course1);
-
 
     }
 
-    /**
-     * Updates a student's past mistakes in form of a matrix
-     * @param originalMatrix Refers to a student's past mistakes
-     * @param newRow Refers to the latest exercise added
-     * @return updated past mistakes
-     */
+    public void showEnrolledReadingCourses(Integer studentId){
+        Student student=getStudentById(studentId);
+        for (Course course:student.getCourses())
+            if (course.getCourseName().contains("Reading"))
+                System.out.println(course);
+    }
+
+
     public static String[][] appendRow(String[][] originalMatrix, String[] newRow) {
         if (originalMatrix==null||originalMatrix.length==0)
         {
@@ -135,89 +100,76 @@ public class ReadingService {
         return newMatrix;
     }
 
-    /**
-     * A student can practice German reading by answering text related questions. Wrong answers
-     * can be reviewed later
-     * @param studentId Refers to a student who practices reading
-     * @param courseId Refers to the course the student practices in
-     */
     public void practiceReading(Integer studentId, Integer courseId){
         System.out.println("\n\nLese den folgenden Text durch und beantworte die Fragen\n\n");
-//        Student student = studentRepo.getById(studentId);
-//        Reading course = readingRepo.getById(courseId);
-
 
         Student student = getStudentById(studentId);
-        //System.out.println(student);
+
         Reading course = getReadingById(courseId);
-        //System.out.println(course);
+
         String[][] exercises=course.getExercises();
         Scanner scanner = new Scanner(System.in);
         String[] exercise;
         int foundCourse=0;
         int mistakeCounter=0;
 
-        for (Student stud:studentRepo.getObjects())
-            if (stud.getId().equals(studentId))
-                for (Course course1:stud.getCourses())
-                    if (course1.getId().equals(courseId))
+        for (Course course1:student.getCourses())
+            if (course1.getId().equals(courseId))
+                foundCourse=1;
+
+        if (foundCourse==1)
+        {
+            System.out.println(exercises[0][0]);
+            System.out.println(exercises[1][0]);
+            for (int i=2;i<6;i++)
+            {
+                exercise=exercises[i];
+                System.out.println(exercise[0]+exercise[1]+"\n"+exercise[2]);
+                System.out.println("Your answer: ");
+                char answer = scanner.nextLine().charAt(0);
+                int found=0;
+
+                if (answer=='a' || answer=='b')
+                {
+                    for (int j=1;j<=2;j++)
                     {
-                        foundCourse=1;
-                        System.out.println(exercises[0][0]);
-                        System.out.println(exercises[1][0]);
-                        for (int i=2;i<6;i++)
-                        {
-                            exercise=exercises[i];
-                            System.out.println(exercise[0]+exercise[1]+"\n"+exercise[2]);
-                            System.out.println("Your answer: ");
-                            char answer = scanner.nextLine().charAt(0);
-                            int found=0;
-
-                            if (answer=='a' || answer=='b')
+                        if (exercise[j].charAt(0)==answer && exercise[j].charAt(1)=='.')
+                            if (exercise[j] == exercise[3])
                             {
-                                for (int j=1;j<=2;j++)
-                                {
-                                    if (exercise[j].charAt(0)==answer && exercise[j].charAt(1)=='.')
-                                        if (exercise[j] == exercise[3])
-                                        {
-                                            System.out.println("Correct! " + exercise[3]);
-                                            found=1;
-                                            break;
-                                        }
-                                }
-                                if (found==0)
-                                {
-                                    System.out.println("Wrong! The right answer was " + exercise[3]);
-                                    mistakeCounter+=1;
-                                    if (mistakeCounter==1)
-                                    {
-                                        student.setPastMistakes(appendRow(student.getPastMistakes(),exercises[0]));
-                                        student.setPastMistakes(appendRow(student.getPastMistakes(),exercises[1]));
-                                        System.out.println(student.getPastMistakes().length);
-                                    }
-                                    student.setPastMistakes(appendRow(student.getPastMistakes(),exercise));
-                                }
+                                System.out.println("Correct! " + exercise[3]);
+                                found=1;
+                                break;
                             }
-                            else
-                                System.out.println("Invalid choice!");
-                        }
-                        System.out.println("\n\n\nPractice complete!\n\n\n");
                     }
-
-
+                    if (found==0)
+                    {
+                        System.out.println("Wrong! The right answer was " + exercise[3]);
+                        mistakeCounter+=1;
+                        if (mistakeCounter==1)
+                        {
+                            student.setPastMistakes(appendRow(student.getPastMistakes(),exercises[0]));
+                            student.setPastMistakes(appendRow(student.getPastMistakes(),exercises[1]));
+                            studentRepo.update(student);
+                        }
+                        student.setPastMistakes(appendRow(student.getPastMistakes(),exercise));
+                        studentRepo.update(student);
+                    }
+                }
+                else
+                    System.out.println("Invalid choice!");
+            }
+            System.out.println("\n\n\nPractice complete!\n\n\n");
+        }
 
         if (foundCourse==0)
             System.out.println("\n\n\nYou are not enrolled in this course!");
 
     }
 
-    /**
-     * A student can practice past reading mistakes
-     * @param studentId Refers to a specific student
-     */
+
     public void reviewPastReadingMistakes(Integer studentId){
         Scanner scanner = new Scanner(System.in);
-        //Student student = studentRepo.getById(studentId);
+
         Student student = getStudentById(studentId);
         String[][] pastMistakes=student.getPastMistakes();
         int numRows = pastMistakes.length;
@@ -256,45 +208,23 @@ public class ReadingService {
         System.out.println("\n\n\nReview complete!\n\n\n");
     }
 
-    /**
-     *
-     * @return all reading courses
-     */
-    public List<Reading> getAvailableCourses() {
-        return readingRepo.getObjects();
+    public void getAvailableCourses() {
+
+        for (Reading reading:readingRepo.getAll())
+            System.out.println(reading);
+    }
+    public List<Student> getAllStudents() {
+        return studentRepo.getAll();
     }
 
-    /**
-     *
-     * @param courseId Refers to a specific reading course
-     * @return all students enrolled in a reading course
-     */
     public List<Student> getEnrolledStudents(Integer courseId) {
-        //Reading course = readingRepo.getById(courseId);
 
         Reading course = getReadingById(courseId);
         return course.getEnrolledStudents();
     }
 
-    /**
-     * Shows all reading courses a student is enrolled in
-     * @param studentId identifies a student
-     */
-    public void showEnrolledReadingCourses(Integer studentId){
-        //Student student = studentRepo.getById(studentId);
-        //Student student = getStudentById(studentId);
-        for (Student stud:studentRepo.getObjects())
-            if (stud.getId().equals(studentId))
-                for (Course course:stud.getCourses())
-                    if (course.getCourseName().contains("Reading"))
-                        System.out.println(course);
-    }
-
-    /**
-     * Shows all students enrolled in at least one reading course
-     */
     public void showStudentsEnrolledInReadingCourses(){
-        for(Student student:studentRepo.getObjects())
+        for(Student student:studentRepo.getAll())
             for(Course course:student.getCourses())
                 if(course.getCourseName().contains("Reading"))
                 {
@@ -303,35 +233,21 @@ public class ReadingService {
                 }
     }
 
-    /**
-     * A teacher can remove a reading course
-     * @param courseId Refers to a specific course
-     * @param teacherId Refers to the teacher who removes the course
-     */
     public void removeCourse(Integer courseId, Integer teacherId) {
-        //Reading course=readingRepo.getById(courseId);
 
         Reading course = getReadingById(courseId);
-        if (course.getTeacher().getId()==teacherId){
-            readingRepo.delete(course);
+        if (course.getTeacher().getId().equals(teacherId)){
+            readingRepo.delete(courseId);
         }
         else{
             System.out.println("You don't have access to this course!");
         }
     }
 
-    /**
-     * A teacher can either create or update a reading course if the course already exists
-     * @param courseId refers to the course id that is to be updated or created
-     * @param teacherId refers to the teacher that updates the course
-     * @param courseName refers to the updated course name
-     * @param maxStudents refers to the maximum number of students that can enroll
-     * @param exerciseSet refers to the set of exercises the new course obtains
-     */
     public void createOrUpdateReadingCourse(Integer courseId, Integer teacherId, String courseName, Integer maxStudents, Integer exerciseSet){
         int found=0;
-        for (Reading course: readingRepo.getObjects()){
-            if (course.getId()==courseId)
+        for (Reading course: readingRepo.getAll()){
+            if (course.getId().equals(courseId))
             {
                 found=1;
                 updateReadingCourse(courseId,teacherId,courseName,maxStudents, exerciseSet);
@@ -344,9 +260,10 @@ public class ReadingService {
     }
 
     public void createReadingCourse(Integer courseId, Integer teacherId,String courseName, Integer maxStudents, Integer exerciseSet){
-        //Teacher teacher=teacherRepo.getById(teacherId);
+
         Teacher teacher=getTeacherById(teacherId);
         Reading r1=new Reading(courseId,courseName,teacher,maxStudents);
+        readingRepo.create(r1);
         if(exerciseSet==1)
         {
             String[][] readingExercises = {
@@ -430,15 +347,19 @@ public class ReadingService {
             };
             r1.setExercises(readingExercises4);
         }
-        readingRepo.save(r1);
+        readingRepo.update(r1);
+
     }
 
     public void updateReadingCourse(Integer courseId, Integer teacherId,String courseName, Integer maxStudents, Integer exerciseSet){
-        //Reading course=readingRepo.getById(courseId);
-        //Teacher teacher=teacherRepo.getById(teacherId);
+
         Teacher teacher=getTeacherById(teacherId);
         Reading course=getReadingById(courseId);
-        Reading r1=new Reading(courseId,courseName,teacher,maxStudents);
+
+        course.setCourseName(courseName);
+        course.setTeacher(teacher);
+        course.setAvailableSlots(maxStudents);
+        //Reading r1=new Reading(courseId,courseName,teacher,maxStudents);
 
         if(exerciseSet==1)
         {
@@ -450,7 +371,7 @@ public class ReadingService {
                     {"\n\nDer Ich-Erzähler unternimmt eine Reise, deren Dauer undefiniert ist.\n\n", "a. wahr", "b. falsch", "a. wahr"},
                     {"\n\nDie Parabel kann eine Metapher für das Unbekannte des Lebens darstellen.\n\n", "a. wahr", "b. falsch", "a. wahr"},
             };
-            r1.setExercises(readingExercises);
+            course.setExercises(readingExercises);
         }
         if (exerciseSet==2)
         {
@@ -471,7 +392,7 @@ public class ReadingService {
                     {"\n\nDer Ich Erzähler stirbt am Ende.\n\n", "a. wahr", "b. falsch", "a. wahr"},
                     {"\n\nDie Parabel kann bedeuten, dass der Tod in einer verzweifelten Situation eine Befreiung ist.\n\n", "a. wahr", "b. falsch", "a. wahr"},
             };
-            r1.setExercises(readingExercises1);
+            course.setExercises(readingExercises1);
         }
         if(exerciseSet==3)
         {
@@ -491,7 +412,7 @@ public class ReadingService {
                     {"\n\nDie Kameraden kämpfen den Fremden ab.\n\n", "a. wahr", "b. falsch", "b. falsch"},
                     {"\n\nDie Parabel kann eine Metapher für die Initiativlosigkeit des einfachen Menschen sein.\n\n", "a. wahr", "b. falsch", "a. wahr"}
             };
-            r1.setExercises(readingExercises2);
+            course.setExercises(readingExercises2);
         }
         if(exerciseSet==4)
         {
@@ -507,7 +428,7 @@ public class ReadingService {
                     {"\n\nDer Schutzmann kennt den Weg nicht.\n\n", "a. wahr", "b. falsch", "a. wahr"},
                     {"\n\nDie Parabel kann eine Metapher für die Kontrollosigkeit des Lebens sein.\n\n", "a. wahr", "b. falsch", "a. wahr"}
             };
-            r1.setExercises(readingExercises3);
+            course.setExercises(readingExercises3);
         }
         if(exerciseSet==5)
         {
@@ -521,71 +442,35 @@ public class ReadingService {
                     {"\n\nDie Parabel kann bedeuten, dass Menschen sich willig das Leben zerstören.\n\n", "a. wahr", "b. falsch", "a. wahr"},
                     {"\n\nDie Parabel kann bedeuten, dass die Komplizierung eine Rettung darstellen kann.\n\n", "a. wahr", "b. falsch", "b. falsch"}
             };
-            r1.setExercises(readingExercises4);
+            course.setExercises(readingExercises4);
         }
 
-        readingRepo.update(course,r1);
+        readingRepo.update(course);
     }
 
-    /**
-     * Replaces the teacher of a reading course with another
-     * @param teacherId New teacher responsible for reading course
-     * @param courseId Exam whose teacher is being replaced
-     */
-    public void changeTeacherAccessToCourse(Integer courseId, Integer teacherId){
-//        Reading course=readingRepo.getById(courseId);
-//        Teacher teacher=teacherRepo.getById(teacherId);
-        Teacher teacher=getTeacherById(teacherId);
-        Reading course=getReadingById(courseId);
-        course.setTeacher(teacher);
-    }
-
-    /**
-     * Show all reading courses of a teacher
-     * @param teacherId refers to a teacher
-     */
     public void viewCourseTaughtByTeacher(Integer teacherId){
-        //Teacher teacher=teacherRepo.getById(teacherId);
-        Teacher teacher=getTeacherById(teacherId);
-        for(Reading course:readingRepo.getObjects())
-            if (course.getTeacher().getId()==teacherId)
-                System.out.println(course.getCourseName());
+        for(Reading course:readingRepo.getAll())
+            if (course.getTeacher().getId().equals(teacherId))
+                System.out.println(course);
     }
 
-    /**
-     * Shows all mandatory books for a reading course
-     * @param studentId identifies a student
-     * @param courseId identifies a reading course
-     */
     public void viewMandatoryBooks(Integer studentId, Integer courseId){
-        //Reading course=readingRepo.getById(courseId);
         Reading course=getReadingById(courseId);
         for (String book:course.getMandatoryBooks()){
             System.out.println(book);
         }
     }
 
-    /**
-     *
-     * @return all students
-     */
-    public List<Student> getAllStudents() {
-        return studentRepo.getObjects();
-    }
-
-    /**
-     * Adds a new mandatory books for a reading course
-     * @param teacherId identifies a teacher
-     * @param courseId identifies a course
-     * @param book refers to a book title
-     */
     public void addMandatoryBook(Integer teacherId, Integer courseId,String book){
-        //Reading course=readingRepo.getById(courseId);
         Reading course=getReadingById(courseId);
-        if(course.getTeacher().getId()==teacherId)
+        if(course.getTeacher().getId().equals(teacherId))
         {
             course.getMandatoryBooks().add(book);
+            readingRepo.update(course);
         }
         else System.out.println("You don t have access to this course");
     }
+
+
+
 }
