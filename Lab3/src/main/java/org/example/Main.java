@@ -266,70 +266,7 @@ public class Main {
         Exam exam3=new Exam(3,"VocabularyExam1",new Teacher("ExamTeacher3",2));
         Exam exam4=new Exam(4,"WritingExam1",new Teacher("ExamTeacher4",2));
 
-//        String [][] grammarExercises={
-//                { "Du (brauchen) _ Hilfe.", "brauchst" },
-//                { "Ich bin _ Hause.", "zu" },
-//                { "Er trägt _.", "bei" },
-//                { "Diana (setzen)_ sich auf das Sofa.", "setzt" },
-//                { "Stefi klettert auf _ Baum.", "den" },
-//                { "Ich (besuchen) _ diese Kirche.", "besuche" },
-//                { "Wir spielen DOTA in _ Klasse.", "der" },
-//                { "Mama kocht immer (lecker)_ Essen", "leckeres" },
-//                { "Der Ball ist unter _ Tisch gerollt.", "den" },
-//                { "Mein Mann kommt immer betrunken _ Hause.", "nach" }
-//        };
 
-//        String[][] readingExercises = {
-//                {"Der Aufbruch\n" + "Franz Kafka","","",""},
-//                {"Ich befahl mein Pferd aus dem Stall zu holen. Der Diener verstand mich nicht.\nIch ging selbst in den Stall, sattelte mein Pferd und bestieg es. In der Ferne hörte ich eine Trompete blasen,\nich fragte ihn, was das bedeute. Er wusste nichts und hatte nichts gehört. Beim Tore hielt er mich auf und fragte:\n\"Wohin reitest du, Herr?\" \"Ich weiß es nicht,\" sagte ich, \"nur weg von hier. Immerfort weg von hier, nur so kann ich\nmein Ziel erreichen.\" \"Du kennst also dein Ziel?\" fragte er. \"Ja,\" antwortete ich, \"ich sagte es doch: »Weg-von-hier«,\ndas ist mein Ziel.\" \"Du hast keinen Essvorrat mit,\" sagte er. \"Ich brauche keinen,\" sagte ich, \"die Reise ist so lang,\ndass ich verhungern muss, wenn ich auf dem Weg nichts bekomme. Kein Essvorrat kann mich retten. Es ist ja zum Glück eine\nwahrhaft ungeheure Reise.\"", "", "", ""},
-//                {"\n\nDer Diener kann auf alle Fragen des Ich-Erzählers antworten.\n\n", "a. wahr", "b. falsch", "b. falsch"},
-//                {"\n\nDer Ich-Erzähler nimmt einen Essvorrat.\n\n", "a. wahr", "b. falsch", "b. falsch"},
-//                {"\n\nDer Ich-Erzähler unternimmt eine Reise, deren Dauer undefiniert ist.\n\n", "a. wahr", "b. falsch", "a. wahr"},
-//                {"\n\nDie Parabel kann eine Metapher für das Unbekannte des Lebens darstellen.\n\n", "a. wahr", "b. falsch", "a. wahr"},
-//        };
-
-//        Map<String, String> vocabularyExercises = new HashMap<>();
-
-//        vocabularyExercises.put("Hund", "dog");
-//        vocabularyExercises.put("Katze", "cat");
-//        vocabularyExercises.put("Apfel", "apple");
-//        vocabularyExercises.put("Buch", "book");
-//        vocabularyExercises.put("Haus", "house");
-//        vocabularyExercises.put("Auto", "car");
-//        vocabularyExercises.put("Baum", "tree");
-//        vocabularyExercises.put("Blume", "flower");
-//        vocabularyExercises.put("Fisch", "fish");
-//        vocabularyExercises.put("Brot", "bread");
-//        vocabularyExercises.put("Schule", "school");
-//        vocabularyExercises.put("Stuhl", "chair");
-//        vocabularyExercises.put("Tisch", "table");
-//        vocabularyExercises.put("Fenster", "window");
-//        vocabularyExercises.put("Tür", "door");
-//        vocabularyExercises.put("Sonne", "sun");
-//        vocabularyExercises.put("Mond", "moon");
-//        vocabularyExercises.put("Wasser", "water");
-//        vocabularyExercises.put("Feuer", "fire");
-//        vocabularyExercises.put("Freund", "friend");
-//        vocabularyExercises.put("schnell", "fast");
-//        vocabularyExercises.put("langsam", "slow");
-//        vocabularyExercises.put("klein", "small");
-//        vocabularyExercises.put("groß", "big");
-//        vocabularyExercises.put("alt", "old");
-//        vocabularyExercises.put("jung", "young");
-//        vocabularyExercises.put("kalt", "cold");
-//        vocabularyExercises.put("heiß", "hot");
-//        vocabularyExercises.put("glücklich", "happy");
-//        vocabularyExercises.put("traurig", "sad");
-//        vocabularyExercises.put("laufen", "to run");
-//        vocabularyExercises.put("springen", "to jump");
-//        vocabularyExercises.put("essen", "to eat");
-//        vocabularyExercises.put("trinken", "to drink");
-//        vocabularyExercises.put("schlafen", "to sleep");
-//        vocabularyExercises.put("sprechen", "to speak");
-//        vocabularyExercises.put("lesen", "to read");
-//        vocabularyExercises.put("schreiben", "to write");
-//        vocabularyExercises.put("lernen", "to learn");
-//        vocabularyExercises.put("arbeiten", "to work");
 
         String exercise="Schreibe einen Text über den Frühling. :3";
 
@@ -341,8 +278,6 @@ public class Main {
         examRepo.save(exam3);
         exam4.setRequirement(exercise);
         examRepo.save(exam4);
-
-
 
 
 
@@ -384,9 +319,16 @@ public class Main {
         grammarController.changeTeacherAccessToGrammarCourse(10,1);
         examController.changeTeacherAccessToExam(1, 4);
 
-//        for (Student student:studentRepo.getObjects()){
-//            System.out.println(student);
-//        }
+        for (Student student:studentRepo.getObjects()){
+            System.out.println(student);
+        }
+        Student stud1=readingService.getStudentById(1);
+        System.out.println("\n"+stud1);
+        studentRepo.delete(stud1);
+        System.out.println("\n");
+        for (Student student:studentRepo.getObjects()){
+            System.out.println(student);
+        }
 //        Student stud=readingService.getStudentById(1);
 //        Teacher t=readingService.getTeacherById(1);
 //        System.out.println(stud);
@@ -394,8 +336,8 @@ public class Main {
 
         readingController.enrollStudent(1,6);
         grammarController.enrollStudent(1,10);
-//        vocabController.enrollStudent(1, 20);
-//        writingController.enrollStudent(1, 30);
+        vocabController.enrollStudent(1, 20);
+        writingController.enrollStudent(1, 30);
 
 
         StudentView studentView = new StudentView(studentController,readingController,examController, grammarController, vocabController, writingController);

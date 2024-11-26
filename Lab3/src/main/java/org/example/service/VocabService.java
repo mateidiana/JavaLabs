@@ -34,7 +34,7 @@ public class VocabService {
 
     public Student getStudentById(Integer studentId){
         for (Student student : studentRepo.getObjects()) {
-            if (student.getId() == studentId)
+            if (student.getId().equals(studentId))
                 return student;
         }
         return null;
@@ -42,7 +42,7 @@ public class VocabService {
 
     public Teacher getTeacherById(Integer teacherId){
         for (Teacher teacher : teacherRepo.getObjects()) {
-            if (teacher.getId() == teacherId)
+            if (teacher.getId().equals(teacherId))
                 return teacher;
         }
         return null;

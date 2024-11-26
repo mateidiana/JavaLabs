@@ -193,6 +193,7 @@ public class ReadingService {
                                     {
                                         student.setPastMistakes(appendRow(student.getPastMistakes(),exercises[0]));
                                         student.setPastMistakes(appendRow(student.getPastMistakes(),exercises[1]));
+                                        System.out.println(student.getPastMistakes().length);
                                     }
                                     student.setPastMistakes(appendRow(student.getPastMistakes(),exercise));
                                 }

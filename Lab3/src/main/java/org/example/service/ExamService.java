@@ -47,7 +47,7 @@ public class ExamService {
 
     public Student getStudentById(Integer studentId){
         for (Student student : studentRepo.getObjects()) {
-            if (student.getId() == studentId)
+            if (student.getId().equals(studentId))
                 return student;
         }
         return null;
@@ -55,7 +55,7 @@ public class ExamService {
 
     public Teacher getTeacherById(Integer teacherId){
         for (Teacher teacher : teacherRepo.getObjects()) {
-            if (teacher.getId() == teacherId)
+            if (teacher.getId().equals(teacherId))
                 return teacher;
         }
         return null;
@@ -63,7 +63,7 @@ public class ExamService {
 
     public Exam getExamById(Integer examId){
         for (Exam exam : examRepo.getObjects()) {
-            if (exam.getId() == examId)
+            if (exam.getId().equals(examId))
                 return exam;
         }
         return null;
@@ -85,61 +85,64 @@ public class ExamService {
         int foundCourse=0;
         float score=2;
 
-        for (Course findCourse : student.getCourses()){
-            if (findCourse.getCourseName().contains("Reading"))
-            {
-                foundCourse=1;
-                System.out.println(exercises[0][0]);
-                System.out.println(exercises[1][0]);
-                for (int i=2;i<6;i++)
-                {
-                    exercise=exercises[i];
-                    System.out.println(exercise[0]+exercise[1]+"\n"+exercise[2]);
-                    System.out.println("Your answer: ");
-                    char answer = scanner.nextLine().charAt(0);
-                    int found=0;
-
-                    if (answer=='a' || answer=='b')
+        for (Student stud:studentRepo.getObjects())
+            if (stud.getId().equals(studentId))
+                for (Course findCourse : stud.getCourses()){
+                    if (findCourse.getCourseName().contains("Reading"))
                     {
-                        for (int j=1;j<=2;j++)
+                        foundCourse=1;
+                        System.out.println(exercises[0][0]);
+                        System.out.println(exercises[1][0]);
+                        for (int i=2;i<6;i++)
                         {
-                            if (exercise[j].charAt(0)==answer && exercise[j].charAt(1)=='.')
-                                if (exercise[j] == exercise[3])
+                            exercise=exercises[i];
+                            System.out.println(exercise[0]+exercise[1]+"\n"+exercise[2]);
+                            System.out.println("Your answer: ");
+                            char answer = scanner.nextLine().charAt(0);
+                            int found=0;
+
+                            if (answer=='a' || answer=='b')
+                            {
+                                for (int j=1;j<=2;j++)
                                 {
-                                    System.out.println("Correct! " + exercise[3]);
-                                    score+=2;
-                                    found=1;
-                                    break;
+                                    if (exercise[j].charAt(0)==answer && exercise[j].charAt(1)=='.')
+                                        if (exercise[j] == exercise[3])
+                                        {
+                                            System.out.println("Correct! " + exercise[3]);
+                                            score+=2;
+                                            found=1;
+                                            break;
+                                        }
                                 }
+                                if (found==0)
+                                {
+                                    System.out.println("Wrong! The right answer was " + exercise[3]);
+                                }
+                            }
+                            else
+                                System.out.println("Invalid choice!");
                         }
-                        if (found==0)
-                        {
-                            System.out.println("Wrong! The right answer was " + exercise[3]);
-                        }
+
+                        System.out.println("\n\n\nExam complete!\n\n\n");
+                        System.out.println("Your score: "+ score + "\n\n");
+                        Map<Integer, Float> readingExamResults=new HashMap<>();
+                        readingExamResults=student.getReadingResults();
+                        readingExamResults.put(examId,score);
+                        student.setReadingResults(readingExamResults);
+
+                        List<Student> examined;
+                        examined=exam.getExaminedStudents();
+                        examined.add(student);
+                        exam.setExaminedStudents(examined);
+
+                        Map<Student,Float> results;
+                        results=exam.getResults();
+                        results.put(student,score);
+                        exam.setResults(results);
+                        return;
                     }
-                    else
-                        System.out.println("Invalid choice!");
                 }
 
-                System.out.println("\n\n\nExam complete!\n\n\n");
-                System.out.println("Your score: "+ score + "\n\n");
-                Map<Integer, Float> readingExamResults=new HashMap<>();
-                readingExamResults=student.getReadingResults();
-                readingExamResults.put(examId,score);
-                student.setReadingResults(readingExamResults);
-
-                List<Student> examined;
-                examined=exam.getExaminedStudents();
-                examined.add(student);
-                exam.setExaminedStudents(examined);
-
-                Map<Student,Float> results;
-                results=exam.getResults();
-                results.put(student,score);
-                exam.setResults(results);
-                return;
-            }
-        }
         if (foundCourse==0)
             System.out.println("\n\n\nYou are not enrolled in any reading course!");
     }
@@ -150,13 +153,21 @@ public class ExamService {
      */
     public void showReadingResults(Integer studentId){
         //Student student = studentRepo.getById(studentId);
-        Student student=getStudentById(studentId);
-        Map<Integer, Float> readingExamResults=new HashMap<>();
-        readingExamResults=student.getReadingResults();
-        System.out.println("Your past scores: ");
-        for (Map.Entry<Integer, Float> entry : readingExamResults.entrySet()) {
-            System.out.println("Reading exam id: " + entry.getKey() + ", Score: " + entry.getValue());
-        }
+        //Student student=getStudentById(studentId);
+
+        for (Student stud:studentRepo.getObjects())
+            System.out.println(stud);
+        for (Student stud:studentRepo.getObjects())
+            if (stud.getId().equals(studentId)){
+                Map<Integer, Float> readingExamResults=new HashMap<>();
+                readingExamResults=stud.getReadingResults();
+                System.out.println("Your past scores: ");
+                for (Map.Entry<Integer, Float> entry : readingExamResults.entrySet()) {
+                    System.out.println("Reading exam id: " + entry.getKey() + ", Score: " + entry.getValue());
+                }
+            }
+
+
     }
 
     /**
