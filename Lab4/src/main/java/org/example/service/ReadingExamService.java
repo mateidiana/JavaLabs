@@ -101,8 +101,28 @@ public class ReadingExamService {
         return readingExamRepo.getAll();
     }
 
+    public List<ReadingExam> examsOfATeacher(int teacherId){
+        List<ReadingExam> exams=new ArrayList<>();
+        for (ReadingExam exam:readingExamRepo.getAll())
+            if (exam.getTeacher()==teacherId)
+                exams.add(exam);
+        return exams;
+    }
 
-    //show results of all students on all reading exams of a teacher
+    //show results of all students on a reading exam of a teacher
+    public List<ExamResult> showAllResultsOfTeacherExam(int teacherId, int examId){
+        List<ExamResult> allReadingResults=new ArrayList<>();
+        if (getReadingExamById(examId).getTeacher()==teacherId){
+            for (Student student:studentRepo.getAll())
+                for (ExamResult result:student.getResults())
+                    if(result.getExam()==examId)
+                        allReadingResults.add(result);
+            return allReadingResults;
+        }
+        else return allReadingResults;
+
+    }
+
     //delete reading exam
     //create/update reading exam
     //filter students by passing grade
