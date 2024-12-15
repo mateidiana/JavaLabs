@@ -97,7 +97,11 @@ public class ReadingExamService {
         studentRepo.update(student);
     }
 
-    //show all reading exams
+    public List<ReadingExam> showAllReadingExams(){
+        return readingExamRepo.getAll();
+    }
+
+
     //show results of all students on all reading exams of a teacher
     //delete reading exam
     //create/update reading exam
