@@ -117,9 +117,8 @@ public class ReadingExamService {
                 for (ExamResult result:student.getResults())
                     if(result.getExam()==examId)
                         allReadingResults.add(result);
-            return allReadingResults;
         }
-        else return allReadingResults;
+        return allReadingResults;
 
     }
 
