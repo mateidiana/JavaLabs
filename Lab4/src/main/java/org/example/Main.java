@@ -36,6 +36,8 @@ public class Main {
         IRepository<Student> studentRepo=new InMemoryRepository<>();
         StudentService studentService = new StudentService(studentRepo);
         StudentController studentController = new StudentController(studentService);
+
+
         if (studentController.createStudent(1,"Student 1"))
             System.out.println("Registration successful!");
 
@@ -52,6 +54,7 @@ public class Main {
             else System.out.println("Id already in use!");
 
         } catch(ValidationException e){ System.out.println(e.getMessage());}
+
 
         System.out.println("\n");
         for (Student student:studentRepo.getAll())

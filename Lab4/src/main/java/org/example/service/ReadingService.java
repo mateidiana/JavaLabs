@@ -296,7 +296,7 @@ public class ReadingService {
 
     public void answerDataCheck(String string){
         if (!string.equals("wahr") && !string.equals("falsch"))
-            throw new ValidationException("Name cannot be an empty string!");
+            throw new ValidationException("Invalid answer!");
     }
 
     public void intDataCheck(int number){
