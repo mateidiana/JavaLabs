@@ -4,6 +4,7 @@ import java.util.stream.IntStream;
 import org.example.controller.GrammarController;
 import org.example.controller.ReadingController;
 import org.example.controller.*;
+import org.example.model.Exceptions.EntityNotFoundException;
 import org.example.model.Exceptions.ValidationException;
 
 /**
